@@ -5,12 +5,12 @@ import java.util.PriorityQueue;
 
 public class CourseGraph{
     private HashMap<String, Integer> visited;
-    int totalCredsRemaining;
+    private int totalCredsRemaining;
     private HashMap<String, Integer> credsRemaining;
     private HashMap<String, Course> courses;
     public ArrayList<String> takenCourses;
-    private HashMap<String,ArrayList<String>> shortestPath;
-    private String lp;
+    public HashMap<String,ArrayList<String>> shortestPath;
+    public String lp;
     public CourseGraph(){
         totalCredsRemaining = 0;
         this.visited = new HashMap<String,Integer>();
@@ -18,6 +18,9 @@ public class CourseGraph{
         this.courses = new HashMap<String,Course>();
         this.takenCourses = new ArrayList<String>();
         this.shortestPath = new HashMaps<String,ArrayList<String>>();
+    }
+    public addCourse(String s, Coures c){
+        courses.put(s,c);
     }
     public void computeCourses(){
         while(totalCredsRemaining > 0){

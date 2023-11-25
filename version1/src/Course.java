@@ -11,4 +11,17 @@ public class Course {
         preRequesits = _preRequesits;
         satisfiedCategories = _satsfiedCategories;
     }
+    //mutator
+    public void setCode(String code){
+        this.code = code;
+    }
+    public void setpreRequesits(ArrayList<ArrayList<String>> preRequesits){
+        this.preRequesits = preRequesits;
+    }
+    public void setCredits(int credits){
+        this.credits = credits;
+    }
+    public void setSatisfiedCategories(ArrayList<String> satisfiedCategories){
+        this.satisfiedCategories = satisfiedCategories;
+    }
 }

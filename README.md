@@ -6,7 +6,7 @@ Graduate Better aims to help UW-Madison, and eventually all university, students
 
 ## Author
 
-- Tan Siong Ann
+- Tan Sio#ng Ann
 
 ## Ownership
 

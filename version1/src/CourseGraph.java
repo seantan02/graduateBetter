@@ -26,7 +26,7 @@ public class CourseGraph{
         while(totalCredsRemaining > 0){
             String bestCourse = "";
             int bestVal = 0;
-            for(Map.Entry<String, Course> it : courses.entrySet){
+            for(Map.Entry<String, Course> it : courses.entrySet()){
                 if(visited.contains(it.getKey())) continue;
                 int cCredits = it.getValue().credits;   
                 int val = -cCredits;
@@ -66,8 +66,8 @@ public class CourseGraph{
     List<String> getShortestPath(String c){
         if(shortestPath.containsKey(c)) return shortestPath.get(c);
         List<String> res = new ArrayList<String>();
-        Course cur = courses.get(c);
-        for(ArrayList<String> a : cur.preRequisites){
+        Course curCourse = courses.get(c);
+        for(ArrayList<String> a : curCourse.preRequisites){
             List<String> best = getShortestPath(a.get(0));
             for(String s : a){
                 List<String> cur = getShortestPath(s);

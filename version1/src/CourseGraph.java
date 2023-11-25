@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 
@@ -8,8 +9,8 @@ public class CourseGraph{
     private int totalCredsRemaining;
     private HashMap<String, Integer> credsRemaining;
     private HashMap<String, Course> courses;
-    public ArrayList<String> takenCourses;
-    public HashMap<String,ArrayList<String>> shortestPath;
+    public List<String> takenCourses;
+    public HashMap<String,List<String>> shortestPath;
     public String lp;
     public CourseGraph(){
         totalCredsRemaining = 0;
@@ -18,6 +19,16 @@ public class CourseGraph{
         this.courses = new HashMap<String,Course>();
         this.takenCourses = new ArrayList<String>();
         this.shortestPath = new HashMaps<String,ArrayList<String>>();
+    }
+    public setCourses(HashMap<String,Course> c){
+        courses = c;
+    }
+    public setCredsRemainig(HahsMap<String,Integer> cr){
+        totalCredsRemaining = 0;
+        for(Map.entry<String,Course> it : cr){
+            totalCredsRemaining += it.getValue();
+        }
+        credsRemaining = cr;
     }
     public addCourse(String s, Coures c){
         courses.put(s,c);
@@ -49,7 +60,7 @@ public class CourseGraph{
             for(String req : c.satisfiedCategories){
                  int newVal = Math.max(0,credsRemaining.get(req)-c.credits);
                  int usedCredits = credsRemaining.get(req);
-                 if(c.credits < credsRemainig.get(req)) usedCredits = c.credits;
+                 if(c.credits < credsRemaining.get(req)) usedCredits = c.credits;
                  totalCredsRemaining-=usedCredits;
                  credsRemaining.put(req,newVal);
             }

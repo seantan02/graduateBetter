@@ -6,10 +6,8 @@ import java.util.NoSuchElementException;
  * weights. Duplicate node values are not allowed.
  *
  * @param NodeType is the data type stored at each graph node
- * @param EdgeType is the numeric data type stored at each graph edge, with a
- *                 doubleValue() method that always returns a value >=0.0
  */
-public interface GraphADT<NodeType, EdgeType extends Number> {
+public interface GraphADT<NodeType> {
 
     /**
      * Insert a new node into the graph.
@@ -48,8 +46,7 @@ public interface GraphADT<NodeType, EdgeType extends Number> {
      */
     public int getNodeCount();
 
-    /**
-     * Insert a new directed edge with positive edges weight into the graph.
+    /** Insert a new directed edge with positive edges weight into the graph.
      * Or if an edge between pred and succ already exists, update the data
      * stored in that edge with the new weight.
      * 
@@ -59,7 +56,7 @@ public interface GraphADT<NodeType, EdgeType extends Number> {
      * @return true if the edge could be inserted or updated, or
      *         false if the pred or succ data are not found in any graph nodes
      */
-    public boolean insertEdge(NodeType pred, NodeType succ, EdgeType weight);
+    public boolean insertEdge(NodeType pred, NodeType succ);
 
     /**
      * Remove an edge from the graph.
@@ -80,16 +77,6 @@ public interface GraphADT<NodeType, EdgeType extends Number> {
      */
     public boolean containsEdge(NodeType pred, NodeType succ);
 
-    /**
-     * Return the data associated with a specific edge.
-     * 
-     * @param pred the data item contained in the source node for the edge
-     * @param succ the data item contained in the target node for the edge
-     * @return the non-negative data from the edge between those nodes
-     * @throws NoSuchElementException if either node or the edge between them
-     *                                are not found within this graph
-     */
-    public EdgeType getEdge(NodeType pred, NodeType succ);
 
     /**
      * Return the number of edges in the graph.

@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
  * This BaseGraph class contains stores a set of nodes, along with a set of
  * directed and weighted edges connecting those nodes.
  */
-public class BaseGraph<NodeType, EdgeType extends Number> {
+public class BaseGraph<NodeType> {
 
     // Each node contains unique data along with two lists of directed edges
     protected class Node {
@@ -24,12 +24,10 @@ public class BaseGraph<NodeType, EdgeType extends Number> {
 
     // Each edge contains data/weight, and two nodes that it connects
     protected class Edge {
-        public EdgeType data; // the weight or cost of this edge
         public Node predecessor;
         public Node successor;
 
-        public Edge(EdgeType data, Node pred, Node succ) {
-            this.data = data;
+        public Edge(Node pred, Node succ) {
             this.predecessor = pred;
             this.successor = succ;
         }
@@ -117,7 +115,7 @@ public class BaseGraph<NodeType, EdgeType extends Number> {
      * @return true if the edge could be inserted or updated, or
      *         false if the pred or succ data are not found in any graph nodes
      */
-    public boolean insertEdge(NodeType pred, NodeType succ, EdgeType weight) {
+    public boolean insertEdge(NodeType pred, NodeType succ) {
         // find nodes associated with node data, and return false when not found
         Node predNode = nodes.get(pred);
         Node succNode = nodes.get(succ);
@@ -176,19 +174,6 @@ public class BaseGraph<NodeType, EdgeType extends Number> {
         } catch (NoSuchElementException e) {
             return false;
         }
-    }
-
-    /**
-     * Return the data associated with a specific edge.
-     * 
-     * @param pred the data item contained in the source node for the edge
-     * @param succ the data item contained in the target node for the edge
-     * @return the non-negative data from the edge between those nodes
-     * @throws NoSuchElementException if either node or the edge between them
-     *                                are not found within this graph
-     */
-    public EdgeType getEdge(NodeType pred, NodeType succ) {
-        return getEdgeHelper(pred, succ).data;
     }
 
     protected Edge getEdgeHelper(NodeType pred, NodeType succ) {

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Course implements Comparable<Course>{
@@ -8,8 +9,18 @@ public class Course implements Comparable<Course>{
     public Course(String _code, int _credits, List<List<String>> _preRequesites, List<String> _satsfiedCategories){
         code = _code;
         credits = _credits;
-        preRequesites = _preRequesites;
-        satisfiedCategories = _satsfiedCategories;
+        if(_preRequesites == null){
+            this.preRequesites = new ArrayList<>();
+        }else{
+            this.preRequesites = _preRequesites;
+        }
+        
+        if(_satsfiedCategories == null){
+            this.satisfiedCategories = new ArrayList<>();
+        }else{
+            this.satisfiedCategories = _satsfiedCategories;
+        }
+        
     }
     //accessor
     public String getCode(){

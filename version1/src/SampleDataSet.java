@@ -13,9 +13,9 @@ import java.util.Random;
  * This class models reading a csv dataset and creating graph
  */
 public class SampleDataSet {
-    private static HashMap courseMap = new HashMap<String, Course>();
+    private static HashMap<String, Course> courseMap = new HashMap<String, Course>();
 
-    public static HashMap generateData(){
+    public static HashMap<String, Course> generateData(){
         List<Course> courses = new ArrayList<Course>();
         //Add sample courses
         courses.add(new Course("CS-1", 3, null, null));
@@ -33,8 +33,8 @@ public class SampleDataSet {
         //Pre Requesits
         List<List<String>> cs5PreRequesits = new ArrayList<>();
         List<String> cs5PreRequesits1 = new ArrayList<String>();
+        cs5PreRequesits1.add("CS-2");
         cs5PreRequesits1.add("CS-3");
-        cs5PreRequesits1.add("CS-1");
         List<String> cs5PreRequesits2 = new ArrayList<String>();
         cs5PreRequesits2.add("CS-4");
         cs5PreRequesits.add(cs5PreRequesits1);
@@ -178,10 +178,5 @@ public class SampleDataSet {
             courseMap.put(codes[i], courses.get(i+14));
         }
         return courseMap;
-    }
-
-    public static void main(String[] args) {
-        HashMap<String, Course> sample = SampleDataSet.generateData();
-        System.out.println(sample.get("CS-1").getCode());;
     }
 }

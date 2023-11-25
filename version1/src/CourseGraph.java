@@ -14,44 +14,50 @@ public class CourseGraph{
     public String lp;
     public CourseGraph(){
         totalCredsRemaining = 0;
-        this.visited = new HashMap<String,Integer>();
-        this.credsRemaining = new HashMap<String,Integer>();
-        this.courses = new HashMap<String,Course>();
+        this.visited = new HashMap();
+        this.credsRemaining = new HashMap();
+        this.courses = new HashMap();
         this.takenCourses = new ArrayList<String>();
-        this.shortestPath = new HashMaps<String,ArrayList<String>>();
+        this.shortestPath = new HashMap();
     }
-    public setCourses(HashMap<String,Course> c){
-        courses = c;
+    public void setCourses(HashMap<String,Course> c){
+        this.courses = c;
     }
-    public setCredsRemainig(HahsMap<String,Integer> cr){
+    public void setCredsRemaining(HashMap<String,Integer> cr){
         totalCredsRemaining = 0;
-        for(Map.entry<String,Course> it : cr){
-            totalCredsRemaining += it.getValue();
-        }
+        cr.forEach((key,value) -> {
+            totalCredsRemaining += value;
+        });
         credsRemaining = cr;
     }
-    public addCourse(String s, Coures c){
+    public void addCourse(String s, Coures c){
         courses.put(s,c);
     }
     public void computeCourses(){
         while(totalCredsRemaining > 0){
             String bestCourse = "";
-            int bestVal = 0;
-            for(Map.Entry<String, Course> it : courses.entrySet()){
-                if(visited.contains(it.getKey())) continue;
-                int cCredits = it.getValue().credits;   
+            int bestVal = -10000;
+            for(HashMap.Entry<String,Course> entry : courses.entrySet()){
+                String key = entry.getKey();
+                Course value = entry.getValue();
+                if(visited.containsKey(key)) continue;
+                int cCredits = value.credits;   
                 int val = -cCredits;
-                for(String req : it.getValue().satisfiedCategories){
+
+                for(String req : value.satisfiedCategories){
                     int cRem = credsRemaining.get(req);
                     val+=Math.max(0,Math.min(cRem,cCredits));
                     if(cRem-cCredits > 0 && cRem-cCredits < 3){
                         val+=(cRem-cCredits)-3;
                     }
                 }
-                if(bestCourse.length() == 0)
-                    bestCourse = it.getKey();
+                
+                if(bestCourse.length() == 0){
+                    bestCourse = key;
+                    bestVal=val;
+                }
                 else if(bestVal < val){
-                    bestCourse = it.getKey();
+                    bestCourse = key;
                     bestVal = val;
                 }
             }
@@ -64,7 +70,7 @@ public class CourseGraph{
                  totalCredsRemaining-=usedCredits;
                  credsRemaining.put(req,newVal);
             }
-            visited.put(c,1);
+            visited.put(bestCourse,1);
         }
         lp = takenCourses.get(0);
         for(String s : takenCourses){
@@ -77,8 +83,9 @@ public class CourseGraph{
     List<String> getShortestPath(String c){
         if(shortestPath.containsKey(c)) return shortestPath.get(c);
         List<String> res = new ArrayList<String>();
+        res.add(c);
         Course curCourse = courses.get(c);
-        for(ArrayList<String> a : curCourse.preRequisites){
+        for(List<String> a : curCourse.preRequesites){
             List<String> best = getShortestPath(a.get(0));
             for(String s : a){
                 List<String> cur = getShortestPath(s);
@@ -86,7 +93,7 @@ public class CourseGraph{
                     best = cur;
                 }
             }
-            for(string s : best){
+            for(String s : best){
                 res.add(s);
             }
         }

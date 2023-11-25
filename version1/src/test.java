@@ -1,13 +1,12 @@
 import java.util.HashMap;
 public class test{
     public static void main(String[] args){
-        SampleDataSet sample = new SampleDataSet();
-        HashMap hm = sample.generateData();
+        HashMap<String, Course> sample = SampleDataSet.generateData();
         CourseGraph c = new CourseGraph();
-        c.setCourses(hm);
-        HashMap credsRem = new HashMap<String,Integer>();
+        c.setCourses(sample);
+        HashMap<String,Integer> credsRem = new HashMap<String,Integer>();
         credsRem.put("DS_PROBABILITY",5);
-        credsRem.put("CS_ELECTIVES",5);
+        credsRem.put("CS_ELECTIVES",6);
         credsRem.put("DS_ELECTIVES",5);
         credsRem.put("CS_ALGORITHMS",5);
         credsRem.put("DS_BIGDATA",5);

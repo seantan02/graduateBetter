@@ -30,8 +30,8 @@ public class Course implements Comparable<Course>{
     public void setCode(String code){
         this.code = code;
     }
-    public void setpreRequesits(List<List<String>> preRequesits){
-        this.preRequesits = preRequesits;
+    public void setpreRequesits(List<List<String>> preRequesites){
+        this.preRequesites = preRequesites;
     }
     public void setCredits(int credits){
         this.credits = credits;
@@ -42,5 +42,19 @@ public class Course implements Comparable<Course>{
 
     public int compareTo(Course c){
         return c.credits-this.credits;
+    }
+    public String toString(){
+        String res = "Code: " + code + ", Credits: " + credits + " Categories: ";
+        for(String s : satisfiedCategories) res += s + ", ";
+        res += "\n Pre Reqs: ";
+
+        for(List<String> reqs : this.preRequesites){
+            res+="{";
+            for(String req : reqs){
+                res+= req +", ";
+            }
+            res+="},";
+        }
+        return res;
     }
 }

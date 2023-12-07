@@ -10,15 +10,17 @@ public class test{
         CourseSearch2tothen courseSearch = new CourseSearch2tothen();
         for(Course csCourse : csCourses){
             courseSearch.addCourse(csCourse);
+            System.out.println(csCourse);
         } 
         for(Course dsCourse : dsCourses){
             courseSearch.addCourse(dsCourse);
+            System.out.println(dsCourse);
         } 
 
         HashMap<String,Integer> credsRem = new HashMap<String,Integer>();
         for(String degree:dataset.getDegree()){
             for(String degreeRequirement: dataset.getDegreeRequirements().get(degree)){
-                credsRem.put(degreeRequirement,10);
+                credsRem.put(degreeRequirement,3);
             }
         }
         courseSearch.setCredReqs(credsRem);

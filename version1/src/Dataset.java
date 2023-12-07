@@ -89,13 +89,13 @@ public class Dataset {
                         
                         course.setSatisfiedCategories(satisfiedCategories);
                     }else if(i >1){
-                        prerequisite.add(lineDetails.get(i));
+                        if(lineDetails.get(i).length()>0)prerequisite.add(lineDetails.get(i));
                     }
                 }
                 
                 List<List<String>> preRequisites = new ArrayList<List<String>>();
                 preRequisites.add(prerequisite);
-                course.setpreRequesits(preRequisites);
+                // course.setpreRequesits(preRequisites);
                 this.courses.add(course);
                 numberOfCourses += 1;
                 counter +=1;
@@ -135,6 +135,10 @@ public class Dataset {
             
         }
         return filteredCourse;
+    }
+
+    public int numberOfDegreeRequirement(String degree){
+        return this.degreeRequirements.get(degree).size();
     }
 
     /**

@@ -41,7 +41,7 @@ public class Course implements Comparable<Course>{
     }
 
     public int compareTo(Course c){
-        return c.credits-this.credits;
+        return this.credits-c.credits;//fixed
     }
     public String toString(){
         String res = "Code: " + code + ", Credits: " + credits + " Categories: ";
@@ -56,5 +56,11 @@ public class Course implements Comparable<Course>{
             res+="},";
         }
         return res;
+    }
+
+    public static void main(String[] args) {
+        Course smaller = new Course("AD", 0, null, null);
+        Course bigger = new Course("AC", 2, null, null);
+        System.out.println(smaller.compareTo(bigger));
     }
 }

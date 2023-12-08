@@ -242,41 +242,47 @@ public class CoursePathSearch {
         List<int[]> startMove = new ArrayList<int[]>();
         startMove.add(startState);
         startMove.add(new int[] {parentIndex, g, h, f});
+        startMove.add(new int[] {0, 0, 0, 0, 0, 0});
         nextBestMoves.add(startMove);
         //initialize possible move
         possibleMoves.add(this.creditCombination);
         possibleCount.add(this.creditCombinationCount);
 
         int[] currentState = startState;
-        System.out.println("Array credits representation: ");
-        for(HashMap.Entry<String, Integer> category: this.categoryToInt.entrySet()){
-            String categoryKey = category.getKey();
-            int categoryIndex = category.getValue();
-            System.out.print(categoryKey+" is at index "+categoryIndex+", ");
-        }
-        System.out.println();
         //Algorithm search
         while(!Arrays.equals(currentState, this.targetState) && nextBestMoves.size() != 0){
             int bestTakeLimit = -1; //this tells the algorithm how many of the first best to add to queue
 
             List<int[]> nextBestMove = nextBestMoves.remove();
             int[] nextBestState = nextBestMove.get(0);
-
-            int[] nextBestStateDetail = nextBestMove.get(1);
-            int nextBestStateParentIndex = nextBestStateDetail[0];
-            int nextBestStateG = nextBestStateDetail[1];
-            int nextBestStateH = nextBestStateDetail[2];
-            int nextBestStateF = nextBestStateDetail[3];
+            int[] nextBestStateDetails = nextBestMove.get(1);
+            int nextBestStateParentIndex = nextBestStateDetails[0];
 
             //add to visited
             if(!visited.contains(Arrays.toString(nextBestState))){
                 visited.add(Arrays.toString(nextBestState));
                 bestCreditComPath.add(nextBestMove);
                 parentIndex = bestCreditComPath.size()-1;
+                //keep track of credit combo count
+                if(!Arrays.equals(nextBestState, this.startState)){ //ignore if it is start
+                    int[] moveTaken = nextBestMove.get(2);
+                    HashMap<String, List<Integer>> newPossibleMoves = deepCopyHashMapList(possibleMoves.get(nextBestStateParentIndex));
+                    HashMap<String, Integer> newPossibleCount = deepCopyHashMap(possibleCount.get(nextBestStateParentIndex));
+                    int oldCount = newPossibleCount.get(Arrays.toString(moveTaken));
+                    if(oldCount == 1){
+                        newPossibleMoves.remove(Arrays.toString(moveTaken));
+                        newPossibleCount.remove(Arrays.toString(moveTaken));
+                    }else{
+                        newPossibleCount.replace(Arrays.toString(moveTaken), oldCount-1);
+                    }
+                    possibleMoves.add(newPossibleMoves);
+                    possibleCount.add(newPossibleCount);
+                }
             }
 
-            List<List<int[]>> successors = getSuccessor(nextBestState, possibleMoves.get(0));
-            int bestSuccessorF = Integer.MAX_VALUE;
+            HashMap<String, List<Integer>> possibleMove = possibleMoves.get(parentIndex);
+            System.out.println("Possible moves: "+possibleMove.size());
+            List<List<int[]>> successors = getSuccessor(nextBestState, possibleMove);
             for(List<int[]> successor:successors){
                 int[] successorDetail = new int[4];
                 successorDetail[0] = parentIndex;
@@ -288,31 +294,6 @@ public class CoursePathSearch {
                 }
 
                 if(!nextBestMoves.contains(successor)){
-                    // if(bestSuccessorF > successor.get(1)[3]){
-                    //     bestTakeLimit --;
-                    //     if(bestTakeLimit == 0){
-                    //         break;
-                    //     }
-                    // }
-                    // HashMap<String, List<Integer>> newPossibleMove = possibleMoves.get(parentIndex);
-                    // HashMap<String, Integer> newPossibleCount = possibleCount.get(parentIndex);
-
-                    // int[] moveTaken = successor.get(2);
-                    // int moveLeftCount = newPossibleCount.get(Arrays.toString(moveTaken));
-                    // moveLeftCount--;
-                    // if(moveLeftCount == 0){
-                    //     newPossibleMove.remove(Arrays.toString(moveTaken));
-                    //     newPossibleCount.remove(Arrays.toString(moveTaken));
-                    // }else{
-                    //     newPossibleCount.replace(Arrays.toString(moveTaken),moveLeftCount);
-                    // }
-
-                    // possibleMoves.add(newPossibleMove);
-                    // possibleCount.add(newPossibleCount);
-
-                    // System.out.println("Next best successor added: "+Arrays.toString(successor.get(0)));
-                    // System.out.println("Possible moves tracker size: "+possibleMoves.size());
-                    // nextBestMoves.add(successor);
                     nextBestMoves.add(successor);
                     nextBestMovesCost.put(Arrays.toString(successor.get(0)), successor.get(1)[3]);
                 }else{
@@ -327,11 +308,42 @@ public class CoursePathSearch {
         return bestCreditComPath;
     }
 
+    private static HashMap<String, Integer> deepCopyHashMap(HashMap<String, Integer> original) {
+        HashMap<String, Integer> copy = new HashMap<String, Integer>();
+        for (HashMap.Entry<String, Integer> entry : original.entrySet()) {
+            // Perform a deep copy of keys and values if they are complex objects
+            String key = new String(entry.getKey());  // Copy the key
+            Integer value = entry.getValue();  // Copy the value
+
+            // Add the copied key-value pair to the new map
+            copy.put(key, value);
+        }
+        return copy;
+    }
+
+    private static HashMap<String, List<Integer>> deepCopyHashMapList(HashMap<String, List<Integer>> original) {
+        HashMap<String, List<Integer>> copy = new HashMap<>();
+
+        for (HashMap.Entry<String, List<Integer>> entry : original.entrySet()) {
+            // Perform a deep copy of the key
+            String key = new String(entry.getKey());  // Copy the key
+
+            // Perform a deep copy of the list
+            List<Integer> originalList = entry.getValue();
+            List<Integer> copyList = new ArrayList<>(originalList);
+
+            // Add the copied key and list to the new map
+            copy.put(key, copyList);
+        }
+
+        return copy;
+    }
+
     public static void main(String[] args) {
         Dataset dataset = new Dataset();
         dataset.readFile("version1/prerequisites.csv");
-        ArrayList<Course> csCourses = dataset.filterCourseByPrefix("CS", 50);
-        ArrayList<Course> dsCourses = dataset.filterCourseByPrefix("STAT", 50);
+        ArrayList<Course> csCourses = dataset.filterCourseByPrefix("CS", 100);
+        ArrayList<Course> dsCourses = dataset.filterCourseByPrefix("STAT", 100);
 
         int numberOfDegreeRequirements = dataset.numberOfDegreeRequirement("CS");
         numberOfDegreeRequirements += dataset.numberOfDegreeRequirement("DS");
@@ -352,7 +364,7 @@ public class CoursePathSearch {
         for(String degree:dataset.getDegree()){
             for(String degreeRequirement: dataset.getDegreeRequirements().get(degree)){
                 Random random = new Random();
-                int randomNumber = random.nextInt(3, 8);
+                int randomNumber = random.nextInt(20, 21);
                 int index = -1;
                 try{
                     index = categoryToIndex.get(degreeRequirement);
@@ -378,13 +390,17 @@ public class CoursePathSearch {
 
         List<List<int[]>> bestCreComPath = courseSearch.computeShortestPath();
         for(List<int[]> creComPath: bestCreComPath){
-            String creCom = "[";
-            for(int creComValue: creComPath.get(0)){
-                creCom+=creComValue+", ";
+            for(int[] creCom: creComPath){
+                System.out.println(Arrays.toString(creCom));
             }
-            creCom = creCom.substring(0, creCom.length() - 2);
-            creCom += "]";
-            System.out.println(creCom);
+            System.out.println();
+            // String creCom = "[";
+            // for(int creComValue: creComPath.get(0)){
+            //     creCom+=creComValue+", ";
+            // }
+            // creCom = creCom.substring(0, creCom.length() - 2);
+            // creCom += "]";
+            // System.out.println(creCom);
         }
     }
 }

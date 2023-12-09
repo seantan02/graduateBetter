@@ -20,7 +20,7 @@ public class CourseSearch2tothen{
         this.courseList = new ArrayList();
     }
     public boolean addCourse(Course c){
-        if(curCourseNum >= 50) return false;
+        if(curCourseNum >= 30) return false;
         if(this.courseId.containsKey(c.code)) return false;
         this.courseId.put(c.code,curCourseNum);
         courseList.add(c);
@@ -86,11 +86,10 @@ public class CourseSearch2tothen{
 
         return credsTaken;
     }
-    public ArrayList<String> findBestCombo(int highestCategoryCredits) {
+    public ArrayList<String> findBestCombo() {
         DEBUG = false;
         int bestMask = -1;
         int bestVal = Integer.MAX_VALUE;
-    
         // Iterate through all possible combinations of courses using a bitmask
         for (int i = 1; i < (1 << curCourseNum); i++) {
             int check = checkCourseCombo(i);
@@ -104,19 +103,20 @@ public class CourseSearch2tothen{
     
         ArrayList<String> res = new ArrayList<String>();
         // Extract the courses from the best combination using the bitmask
-        System.out.println("---------------------------");
-        System.out.println(bestMask);
-        System.out.println(bestVal);
-        for(int i = 0; i < curCourseNum; i++){
-            DEBUG = true;
-            int x =  1<<i;
-            if(((1<<i)&bestMask) == 0){
-                continue;
-            }
-            System.out.println("CHECKING REMOVE: \n" + courseList.get(i).toString());
-            int check = checkCourseCombo(bestMask^x);
-            if(check < bestVal){
-                System.out.println("HERE!!");
+        if(DEBUG){
+            System.out.println("---------------------------");
+            System.out.println(bestMask);
+            System.out.println(bestVal);
+            for(int i = 0; i < curCourseNum; i++){
+                int x =  1<<i;
+                if(((1<<i)&bestMask) == 0){
+                    continue;
+                }
+                if(DEBUG) System.out.println("CHECKING REMOVE: \n" + courseList.get(i).toString());
+                int check = checkCourseCombo(bestMask^x);
+                if(check < bestVal){
+                    System.out.println("HERE!!");
+                }
             }
         }
         checkCourseCombo(bestMask);

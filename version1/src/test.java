@@ -8,8 +8,8 @@ public class test{
     private static void computeBestCousePathWithASearch(){
         Dataset dataset = new Dataset();
         dataset.readFile("version1/prerequisites.csv");
-        ArrayList<Course> csCourses = dataset.filterCourseByPrefix("CS",20);
-        ArrayList<Course> dsCourses = dataset.filterCourseByPrefix("STAT", 20);
+        ArrayList<Course> csCourses = dataset.filterCourseByPrefix("CS",10);
+        ArrayList<Course> dsCourses = dataset.filterCourseByPrefix("STAT", 10);
 
         int numberOfDegreeRequirements = dataset.numberOfDegreeRequirement("CS");
         numberOfDegreeRequirements += dataset.numberOfDegreeRequirement("DS");
@@ -80,11 +80,11 @@ public class test{
         HashMap<String,Integer> credsRem = new HashMap<String,Integer>();
         for(String degree:dataset.getDegree()){
             for(String degreeRequirement: dataset.getDegreeRequirements().get(degree)){
-                credsRem.put(degreeRequirement,8);
+                credsRem.put(degreeRequirement,4);
             }
         }
         courseSearch.setCredReqs(credsRem);
-        ArrayList<String> result = courseSearch.findBestCombo(10);
+        ArrayList<String> result = courseSearch.findBestCombo();
         for(String s : result) System.out.println(s);
         // A* Search
         // int numberOfDegreeRequirements = dataset.numberOfDegreeRequirement("CS");

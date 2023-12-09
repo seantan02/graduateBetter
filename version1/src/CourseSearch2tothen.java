@@ -11,6 +11,7 @@ public class CourseSearch2tothen{
     private HashMap<String, Integer> credReqs;
     private HashMap<String, Integer> courseId;
     private List<Course> courseList;
+    private Boolean DEBUG = false;
     public CourseSearch2tothen(){
         this.curCourseNum = 0;
         this.highestCredits = 0;
@@ -35,15 +36,21 @@ public class CourseSearch2tothen{
     public boolean checkPreReqsSatisfied(int mask, int cId){
         Course curCourse = courseList.get(cId);
         for(List<String> reqs : curCourse.preRequesites){
+            if(reqs.size() == 0) continue;
             boolean sat = false;
             for(String req : reqs){
+                if(!this.courseId.containsKey(req)) continue;
                 int reqId = this.courseId.get(req);
+
                 if(((1<<reqId)&mask) != 0){
                     sat = true;
                     break;
                 }
             }
-            if(!sat) return false;
+            if(!sat) {
+                if(DEBUG) System.out.println("\n NOT SATISFIED: "+courseList.get(cId).toString());
+                return false;
+            }
         }
         return true;
     }
@@ -67,18 +74,25 @@ public class CourseSearch2tothen{
                 cr.put(s,cr.get(s)-curCourse.credits);
             }
         }
+        if(DEBUG) System.out.println("Mask: "+mask);
         for(HashMap.Entry<String,Integer> req : cr.entrySet()){
-            if(req.getValue() > 0) return Integer.MAX_VALUE;
+            if(DEBUG) System.out.println(req.getKey() + " " +req.getValue());
+            if(req.getValue() > 0) {
+                return Integer.MAX_VALUE;
+            }
         }
+        
+        if(DEBUG) System.out.println("TAKEN: "+credsTaken);
+
         return credsTaken;
     }
     public ArrayList<String> findBestCombo(int highestCategoryCredits) {
-        int minCourses = (int) (Math.floor((double) highestCategoryCredits / this.highestCredits) + 1);
+        DEBUG = false;
         int bestMask = -1;
         int bestVal = Integer.MAX_VALUE;
     
         // Iterate through all possible combinations of courses using a bitmask
-        for (int i = (1 << minCourses) - 1; i < (1 << curCourseNum); i++) {
+        for (int i = 1; i < (1 << curCourseNum); i++) {
             int check = checkCourseCombo(i);
     
             // Update best combination if the current one is better
@@ -89,14 +103,29 @@ public class CourseSearch2tothen{
         }
     
         ArrayList<String> res = new ArrayList<String>();
-    
         // Extract the courses from the best combination using the bitmask
+        System.out.println("---------------------------");
+        System.out.println(bestMask);
+        System.out.println(bestVal);
+        for(int i = 0; i < curCourseNum; i++){
+            DEBUG = true;
+            int x =  1<<i;
+            if(((1<<i)&bestMask) == 0){
+                continue;
+            }
+            System.out.println("CHECKING REMOVE: \n" + courseList.get(i).toString());
+            int check = checkCourseCombo(bestMask^x);
+            if(check < bestVal){
+                System.out.println("HERE!!");
+            }
+        }
+        checkCourseCombo(bestMask);
         for (int i = 0; i < curCourseNum; i++) {
             if (((1 << i) & bestMask) == 0) continue;
             Course curCourse = courseList.get(i);
             res.add(curCourse.code);
         }
-    
+        
         return res;
     }    
 }

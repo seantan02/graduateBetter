@@ -80,64 +80,64 @@ public class test{
         HashMap<String,Integer> credsRem = new HashMap<String,Integer>();
         for(String degree:dataset.getDegree()){
             for(String degreeRequirement: dataset.getDegreeRequirements().get(degree)){
-                credsRem.put(degreeRequirement,3);
+                credsRem.put(degreeRequirement,8);
             }
         }
         courseSearch.setCredReqs(credsRem);
         ArrayList<String> result = courseSearch.findBestCombo(10);
         for(String s : result) System.out.println(s);
-        //A* Search
-        int numberOfDegreeRequirements = dataset.numberOfDegreeRequirement("CS");
-        numberOfDegreeRequirements += dataset.numberOfDegreeRequirement("DS");
+        // A* Search
+        // int numberOfDegreeRequirements = dataset.numberOfDegreeRequirement("CS");
+        // numberOfDegreeRequirements += dataset.numberOfDegreeRequirement("DS");
 
-        CoursePathSearch courseSearch2 = new CoursePathSearch(numberOfDegreeRequirements);
+        // CoursePathSearch courseSearch2 = new CoursePathSearch(numberOfDegreeRequirements);
         
-        for(Course csCourse : csCourses){
-            courseSearch2.addCourse(csCourse);
-            System.out.println(csCourse);
-        } 
-        for(Course dsCourse : dsCourses){
-            courseSearch2.addCourse(dsCourse);
-            System.out.println(dsCourse);
-        } 
+        // for(Course csCourse : csCourses){
+        //     courseSearch2.addCourse(csCourse);
+        //     System.out.println(csCourse);
+        // } 
+        // for(Course dsCourse : dsCourses){
+        //     courseSearch2.addCourse(dsCourse);
+        //     System.out.println(dsCourse);
+        // } 
 
-        HashMap<String, Integer> categoryToIndex = courseSearch2.getCategoryHashTable();
-        int[] categoriesValues = new int[categoryToIndex.size()];
-        for(String degree:dataset.getDegree()){
-            for(String degreeRequirement: dataset.getDegreeRequirements().get(degree)){
-                // Random random = new Random();
-                // int randomNumber = random.nextInt(8, 10);
-                int randomNumber = 3;
-                int index = -1;
-                try{
-                    index = categoryToIndex.get(degreeRequirement);
-                }catch(Exception e){
-                }
-                //If no category found
-                if(index == -1){
-                    System.out.println("No classes have satisfy "+degreeRequirement+". Impossible.");
-                    break;
-                }
-                categoriesValues[index] = randomNumber;
-            }
-        }
+        // HashMap<String, Integer> categoryToIndex = courseSearch2.getCategoryHashTable();
+        // int[] categoriesValues = new int[categoryToIndex.size()];
+        // for(String degree:dataset.getDegree()){
+        //     for(String degreeRequirement: dataset.getDegreeRequirements().get(degree)){
+        //         // Random random = new Random();
+        //         // int randomNumber = random.nextInt(8, 10);
+        //         int randomNumber = 3;
+        //         int index = -1;
+        //         try{
+        //             index = categoryToIndex.get(degreeRequirement);
+        //         }catch(Exception e){
+        //         }
+        //         //If no category found
+        //         if(index == -1){
+        //             System.out.println("No classes have satisfy "+degreeRequirement+". Impossible.");
+        //             break;
+        //         }
+        //         categoriesValues[index] = randomNumber;
+        //     }
+        // }
         
-        System.out.println("Start state:");
-        for(int categoriesValue : categoriesValues){
-            System.out.print(categoriesValue+" ");
-        }
-        courseSearch2.setStartGoal(categoriesValues);
-        int[] targetState = new int[categoriesValues.length];
-        courseSearch2.setTargetGoal(targetState);
-        System.out.println("\n");
+        // System.out.println("Start state:");
+        // for(int categoriesValue : categoriesValues){
+        //     System.out.print(categoriesValue+" ");
+        // }
+        // courseSearch2.setStartGoal(categoriesValues);
+        // int[] targetState = new int[categoriesValues.length];
+        // courseSearch2.setTargetGoal(targetState);
+        // System.out.println("\n");
 
-        List<List<int[]>> bestCreComPath = courseSearch2.computeShortestPath();
-        for(List<int[]> creComPath: bestCreComPath){
-            for(int[] creCom: creComPath){
-                System.out.println(Arrays.toString(creCom));
-            }
-            System.out.println();
-        }
+        // List<List<int[]>> bestCreComPath = courseSearch2.computeShortestPath();
+        // for(List<int[]> creComPath: bestCreComPath){
+        //     for(int[] creCom: creComPath){
+        //         System.out.println(Arrays.toString(creCom));
+        //     }
+        //     System.out.println();
+        // }
 
         // HashMap<String, Course> sample = SampleDataSet.generateData();
         // CourseGraph c = new CourseGraph();

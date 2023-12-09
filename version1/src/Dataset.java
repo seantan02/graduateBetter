@@ -95,7 +95,7 @@ public class Dataset {
                 
                 List<List<String>> preRequisites = new ArrayList<List<String>>();
                 preRequisites.add(prerequisite);
-                // course.setpreRequesits(preRequisites);
+                course.setpreRequesits(preRequisites);
                 this.courses.add(course);
                 numberOfCourses += 1;
                 counter +=1;

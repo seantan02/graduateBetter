@@ -83,7 +83,6 @@ public class CourseSearch2tothen{
     
             // Update best combination if the current one is better
             if (check < bestVal) {
-                System.out.println(check + " " + i);
                 bestVal = check;
                 bestMask = i;
             }
@@ -92,7 +91,6 @@ public class CourseSearch2tothen{
         ArrayList<String> res = new ArrayList<String>();
     
         // Extract the courses from the best combination using the bitmask
-        System.out.println(bestMask);
         for (int i = 0; i < curCourseNum; i++) {
             if (((1 << i) & bestMask) == 0) continue;
             Course curCourse = courseList.get(i);

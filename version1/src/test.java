@@ -65,8 +65,8 @@ public class test{
     public static void main(String[] args){
         Dataset dataset = new Dataset();
         dataset.readFile("version1/prerequisites.csv");
-        ArrayList<Course> csCourses = dataset.filterCourseByPrefix("CS", 25);
-        ArrayList<Course> dsCourses = dataset.filterCourseByPrefix("STAT", 25);
+        ArrayList<Course> csCourses = dataset.filterCourseByPrefix("CS", 10);
+        ArrayList<Course> dsCourses = dataset.filterCourseByPrefix("STAT", 10);
         CourseSearch2tothen courseSearch = new CourseSearch2tothen();
         for(Course csCourse : csCourses){
             courseSearch.addCourse(csCourse);

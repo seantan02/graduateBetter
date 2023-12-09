@@ -15,7 +15,8 @@ import java.util.Set;
 public class CoursePathSearch {
     private Set<Course> courseList; //Assume every course in the list is unique
     private Set<Course> shortestCoursesPath;
-    private HashMap<String, List<String>> codeToRequisite;
+    private HashMap<String, List<String>> courseToRequisite;
+    private HashMap<String, Set<String>> requisiteToCourse;
     private List<List<Integer>> creditCombinationList;
     private HashMap<String, List<Integer>> creditCombination;
     private HashMap<String, Integer> creditCombinationCount;
@@ -48,7 +49,8 @@ public class CoursePathSearch {
         this.numberOfCategories = _numberOfCategories;
         this.courseList = new HashSet<Course>();
         this.shortestCoursesPath = new HashSet<Course>();
-        this.codeToRequisite = new HashMap<String, List<String>>();
+        this.courseToRequisite = new HashMap<String, List<String>>();
+        this.requisiteToCourse = new HashMap<String, Set<String>>();
         this.creditCombination = new HashMap<String, List<Integer>>();
         this.creditCombinationList = new ArrayList<List<Integer>>();
         this.creditCombinationCount = new HashMap<String, Integer>();
@@ -66,6 +68,9 @@ public class CoursePathSearch {
     }
     public HashMap<String, List<Course>> getCreditCombinationPQ(){
         return this.creditCombinationToCourses;
+    }
+    public HashMap<String, Set<String>> getRequisiteToCourse(){
+        return this.requisiteToCourse;
     }
 
     //mutator
@@ -154,7 +159,19 @@ public class CoursePathSearch {
     public void addCourse(Course _course){
         this.courseList.add(_course);
         for(List<String> courseRequisite: _course.preRequesites){
-            this.codeToRequisite.put(_course.code, courseRequisite);
+            this.courseToRequisite.put(_course.code, courseRequisite);
+            for(String requisite:courseRequisite){
+                Set<String> setCourse;
+                if(this.requisiteToCourse.containsKey(requisite)){
+                    setCourse = this.requisiteToCourse.get(requisite);
+                    setCourse.add(_course.code);
+                    this.requisiteToCourse.replace(requisite, setCourse);
+                }else{
+                    setCourse = new HashSet<String>();
+                    setCourse.add(_course.code);
+                    this.requisiteToCourse.put(requisite, setCourse);
+                }
+            }
         }
 
         //To make sure the arraylist contains enough length (0)
@@ -224,8 +241,9 @@ public class CoursePathSearch {
      * @return
      */
     public List<List<int[]>> computeShortestPath(){
-        List<Course> bestCoursePath = new ArrayList<Course>();
+        List<Course> bestCoursePath;
         List<List<int[]>> bestCreditComPath = new ArrayList<List<int[]>>();
+        HashMap<String, List<Course>> possibleMoveToPossibleCourse = this.creditCombinationToCourses;
         List<HashMap<String, List<Integer>>> possibleMoves = new ArrayList<HashMap<String, List<Integer>>>();
         List<HashMap<String, Integer>> possibleCount = new ArrayList<HashMap<String, Integer>>();
         Set<String> visited = new HashSet<String>();
@@ -378,29 +396,22 @@ public class CoursePathSearch {
                 categoriesValues[index] = randomNumber;
             }
         }
-        
-        System.out.println("Start state:");
-        for(int categoriesValue : categoriesValues){
-            System.out.print(categoriesValue+" ");
-        }
-        courseSearch.setStartGoal(categoriesValues);
-        int[] targetState = new int[categoriesValues.length];
-        courseSearch.setTargetGoal(targetState);
-        System.out.println("\n");
 
-        List<List<int[]>> bestCreComPath = courseSearch.computeShortestPath();
-        for(List<int[]> creComPath: bestCreComPath){
-            for(int[] creCom: creComPath){
-                System.out.println(Arrays.toString(creCom));
-            }
-            System.out.println();
-            // String creCom = "[";
-            // for(int creComValue: creComPath.get(0)){
-            //     creCom+=creComValue+", ";
-            // }
-            // creCom = creCom.substring(0, creCom.length() - 2);
-            // creCom += "]";
-            // System.out.println(creCom);
-        }
+    //     System.out.println("Start state:");
+    //     for(int categoriesValue : categoriesValues){
+    //         System.out.print(categoriesValue+" ");
+    //     }
+    //     courseSearch.setStartGoal(categoriesValues);
+    //     int[] targetState = new int[categoriesValues.length];
+    //     courseSearch.setTargetGoal(targetState);
+    //     System.out.println("\n");
+
+    //     List<List<int[]>> bestCreComPath = courseSearch.computeShortestPath();
+    //     for(List<int[]> creComPath: bestCreComPath){
+    //         for(int[] creCom: creComPath){
+    //             System.out.println(Arrays.toString(creCom));
+    //         }
+    //         System.out.println();
+    //     }
     }
 }

@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.ArrayList;
@@ -10,12 +11,14 @@ public class Dataset {
     private int numberOfCourses;
     private ArrayList<String> degree;
     private HashMap<String, ArrayList<String>> degreeRequirements;
+    private HashMap<String, Course> codeToCourses;
     private ArrayList<Course> courses;
 
     public Dataset(){
         this.numberOfCourses = 0;
         this.degree = new ArrayList<String>();
         this.degreeRequirements = new HashMap<String, ArrayList<String>>();
+        this.codeToCourses = new HashMap<String, Course>();
         this.courses = new ArrayList<Course>();
     }
 
@@ -97,6 +100,7 @@ public class Dataset {
                 preRequisites.add(prerequisite);
                 course.setpreRequesits(preRequisites);
                 this.courses.add(course);
+                this.codeToCourses.put(course.code, course);
                 numberOfCourses += 1;
                 counter +=1;
             }
@@ -122,15 +126,28 @@ public class Dataset {
         }
     }
     
-    public ArrayList<Course> filterCourseByPrefix(String prefix, int limit){
-        ArrayList<Course> filteredCourse = new ArrayList<Course>();
+    public HashSet<Course> filterCourseByPrefix(String prefix, int limit){
+        HashSet<Course> filteredCourse = new HashSet<Course>();
         for(Course course:this.courses){
             if(course.code.startsWith(prefix)){
+                boolean coursePreReqNotAdded= false;
+                //add all pre requisite courses too 
+                for(List<String> preReqList: course.preRequesites){
+                    if(coursePreReqNotAdded) break;
+                    for(String preReq: preReqList){
+                        if(this.codeToCourses.get(preReq)==null){
+                            coursePreReqNotAdded = true;
+                            break;
+                        }
+                        filteredCourse.add(this.codeToCourses.get(preReq));
+                    }
+                }
+                if(coursePreReqNotAdded) break;
                 filteredCourse.add(course);
                 if(limit > 0){
-                        limit--;
-                        if(limit ==0) break;
-                    }
+                    limit--;
+                    if(limit ==0) break;
+                }
             }
             
         }

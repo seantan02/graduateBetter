@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
@@ -13,8 +14,9 @@ import java.util.Set;
  * This class will utilize the idea of A Search to construct a efficient algorithm to search for the shortest path
  */
 public class CoursePathSearch {
-    private Set<Course> courseList; //Assume every course in the list is unique
+    private HashSet<Course> courseList; //Assume every course in the list is unique
     private Set<Course> shortestCoursesPath;
+    private HashMap<String, Course> codeToCourse;
     private HashMap<String, List<String>> courseToRequisite;
     private HashMap<String, Set<String>> requisiteToCourse;
     private List<List<Integer>> creditCombinationList;
@@ -49,6 +51,7 @@ public class CoursePathSearch {
         this.numberOfCategories = _numberOfCategories;
         this.courseList = new HashSet<Course>();
         this.shortestCoursesPath = new HashSet<Course>();
+        this.codeToCourse = new HashMap<String, Course>();
         this.courseToRequisite = new HashMap<String, List<String>>();
         this.requisiteToCourse = new HashMap<String, Set<String>>();
         this.creditCombination = new HashMap<String, List<Integer>>();
@@ -65,6 +68,9 @@ public class CoursePathSearch {
     //accessor
     public HashMap<String, Integer> getCategoryHashTable(){
         return this.categoryToInt;
+    }
+    public HashMap<Integer, String> getIntToCatHashTable(){
+        return this.intToCategory;
     }
     public HashMap<String, List<Course>> getCreditCombinationPQ(){
         return this.creditCombinationToCourses;
@@ -83,8 +89,24 @@ public class CoursePathSearch {
     public void setNumberOfCategories(int _numberOfCategories){
         this.numberOfCategories = _numberOfCategories;
     }
+
+    private List<Integer> computeMoveFromCourse(Course _course){
+        List<Integer> result = new ArrayList<Integer>();
+        for(int i=0;i<this.categoryToInt.size();i++){ //fill the result up with zeros
+            result.add(0);
+        }
+
+        if(_course.satisfiedCategories != null){
+            for(String category : _course.satisfiedCategories){
+                result.set(this.categoryToInt.get(category), _course.credits);
+            }
+        }
+        
+        return result;
+    }
+
     //helper methods
-    private int computeHCost(int[] _currentState) throws IllegalStateException{
+    private int computeHCost(int[] _currentState, double scaler) throws IllegalStateException{
         if(this.targetState.length ==0 ) throw new IllegalStateException("Please first set target goal array before computing cost");
         if(_currentState.length ==0 ) throw new IllegalStateException("Please first set current goal array before computing cost");
         
@@ -95,7 +117,7 @@ public class CoursePathSearch {
             int currentStateValue = _currentState[i];
             cost += Math.abs(targetGoalValue-currentStateValue); 
         }
-        return cost;
+        return (int) ((double) cost * scaler);
     }
 
     /**
@@ -105,7 +127,7 @@ public class CoursePathSearch {
      * @return
      * @throws IllegalStateException
      */
-    private int computeGCost(int[] _currentState, List<Integer> _move) throws IllegalStateException{
+    private int computeGCost(int[] _currentState, List<Integer> _move, double scaler) throws IllegalStateException{
         if(_move.size() ==0 ) throw new IllegalStateException("Next state cannot be length of 0");
         if(_currentState.length ==0 ) throw new IllegalStateException("Please first set current goal array before computing cost");
         //compute by taking the current state[i] - move[i]
@@ -118,7 +140,7 @@ public class CoursePathSearch {
             gain += (currentStateValue-(currentStateValue-moveValue)); 
         }
         gain -= spend;
-        return -gain;
+        return (int) -((double) gain * scaler);
     }
 
     /**
@@ -134,7 +156,7 @@ public class CoursePathSearch {
             int[] stateCloned = Arrays.copyOf(state, state.length);
             int[] moveTaken = Arrays.copyOf(state, state.length);
             List<Integer> moveValueList = move.getValue();
-            int gCost = computeGCost(stateCloned, moveValueList);
+            int gCost = computeGCost(stateCloned, moveValueList, 1.0);
             for(int i=0;i<moveValueList.size();i++){
                 int moveValue = 0;
                 try{
@@ -146,9 +168,9 @@ public class CoursePathSearch {
                 stateCloned[i] -= (moveValue <= stateCloned[i]) ? moveValue : stateCloned[i];
             }
             successor.add(stateCloned);
-            int hCost = computeHCost(stateCloned);
+            int hCost = computeHCost(stateCloned, 0.5);
             int fCost = gCost+hCost;
-            successor.add(new int[] {gCost, hCost, fCost});
+            successor.add(new int[] {gCost, (int) hCost/2, fCost});
             successor.add(moveTaken);
             successors.add(successor);
         }
@@ -158,6 +180,7 @@ public class CoursePathSearch {
 
     public void addCourse(Course _course){
         this.courseList.add(_course);
+        this.codeToCourse.put(_course.code, _course);
         for(List<String> courseRequisite: _course.preRequesites){
             this.courseToRequisite.put(_course.code, courseRequisite);
             for(String requisite:courseRequisite){
@@ -210,9 +233,9 @@ public class CoursePathSearch {
         if(this.creditCombinationToCourses.containsKey(creditCombinationString)){
             this.creditCombinationToCourses.get(creditCombinationString).add(_course);
         }else{
-            List<Course> courseList = new ArrayList<Course>();
-            courseList.add(_course);
-            this.creditCombinationToCourses.put(creditCombinationString, courseList);
+            List<Course> listOfCourse = new ArrayList<Course>();
+            listOfCourse.add(_course);
+            this.creditCombinationToCourses.put(creditCombinationString, listOfCourse);
         }
         
     }
@@ -241,7 +264,6 @@ public class CoursePathSearch {
      * @return
      */
     public List<List<int[]>> computeShortestPath(){
-        List<Course> bestCoursePath;
         List<List<int[]>> bestCreditComPath = new ArrayList<List<int[]>>();
         HashMap<String, List<Course>> possibleMoveToPossibleCourse = this.creditCombinationToCourses;
         List<HashMap<String, List<Integer>>> possibleMoves = new ArrayList<HashMap<String, List<Integer>>>();
@@ -254,7 +276,7 @@ public class CoursePathSearch {
 
         int[] startState = this.startState;
         int g = 0;
-        int h = computeHCost(startState);
+        int h = computeHCost(startState, 1.0);
         int f = g+h;
         int parentIndex = -1;
         List<int[]> startMove = new ArrayList<int[]>();
@@ -275,15 +297,12 @@ public class CoursePathSearch {
             int[] nextBestState = nextBestMove.get(0);
             int[] nextBestStateDetails = nextBestMove.get(1);
             int nextBestStateParentIndex = nextBestStateDetails[0];
+            int[] moveTaken = nextBestMove.get(2);
 
             //add to visited
             if(!visited.contains(Arrays.toString(nextBestState))){
-                visited.add(Arrays.toString(nextBestState));
-                bestCreditComPath.add(nextBestMove);
-                parentIndex = bestCreditComPath.size()-1;
                 //keep track of credit combo count
                 if(!Arrays.equals(nextBestState, this.startState)){ //ignore if it is start
-                    int[] moveTaken = nextBestMove.get(2);
                     HashMap<String, List<Integer>> newPossibleMoves = deepCopyHashMapList(possibleMoves.get(nextBestStateParentIndex));
                     HashMap<String, Integer> newPossibleCount = deepCopyHashMap(possibleCount.get(nextBestStateParentIndex));
                     int oldCount = newPossibleCount.get(Arrays.toString(moveTaken));
@@ -293,13 +312,18 @@ public class CoursePathSearch {
                     }else{
                         newPossibleCount.replace(Arrays.toString(moveTaken), oldCount-1);
                     }
+
                     possibleMoves.add(newPossibleMoves);
                     possibleCount.add(newPossibleCount);
                 }
+
+                visited.add(Arrays.toString(nextBestState)); //add the next state after current operation
+                bestCreditComPath.add(nextBestMove); //add the state to our best credit path as a record OPTIONAL
+                parentIndex = bestCreditComPath.size()-1; //calculate parentIndex
             }
 
             HashMap<String, List<Integer>> possibleMove = possibleMoves.get(parentIndex);
-            System.out.println("Possible moves: "+possibleMove.size());
+            // System.out.println("Possible moves: "+possibleMove.size());
             List<List<int[]>> successors = getSuccessor(nextBestState, possibleMove);
             for(List<int[]> successor:successors){
                 int[] successorDetail = new int[4];
@@ -324,6 +348,92 @@ public class CoursePathSearch {
             currentState = nextBestState;
         }
         return bestCreditComPath;
+    }
+
+    public List<Course> computeBestCourseFromPath(List<int[]> credComMove){
+        HashMap<String, List<Course>> creditCombinationToCourses = this.creditCombinationToCourses;
+        List<Course> result = new ArrayList<Course>();
+        HashSet<String> visited = new HashSet<String>();
+        HashMap<String, Integer> moveLeft = new HashMap<String, Integer>();
+
+        for(int[] move: credComMove){ //compute the Hash Table that maps move to the remaining needed number
+            String moveString = Arrays.toString(move);
+            if(moveLeft.containsKey(moveString)){
+                int oldCount = moveLeft.get(moveString);
+                int newCount = oldCount+1;
+                moveLeft.replace(moveString, newCount);
+            }else{
+                moveLeft.put(moveString, 1);
+            }
+        }
+
+        for(int[] move: credComMove){
+            String moveString = Arrays.toString(move);
+            if(moveLeft.get(moveString) == 0) continue; //if this move is no longer needed
+            if(creditCombinationToCourses.get(moveString) == null) continue;
+            List<Course> bestCourseToTake = new ArrayList<Course>();
+            int bestCourseCost = Integer.MAX_VALUE;
+            for(Course course: creditCombinationToCourses.get(moveString)){
+                List<Course> bestPreReqCombo = new ArrayList<Course>();
+                int preReqComboCost = Integer.MAX_VALUE;
+                if(visited.contains(course.code)) continue;
+                if(course.preRequesites.get(0).size() == 0){ //no requisite
+                    preReqComboCost = 0;
+                }else{
+                    List<List<String>> coursePreReqs = course.preRequesites;
+                    for(List<String> coursePreReq : coursePreReqs){
+                        Course preReqCourseToTake = null;
+                        int currSmallestCost = Integer.MAX_VALUE;
+                        for(String coursePreReqCode : coursePreReq){ 
+                            //1. check if we have satisfied this requisite
+                            //2. If yes, make the course to take null and move on
+                            //3. If no, check if it is in our next move
+                            //4. If yes, make it the course to add
+                            if(visited.contains(coursePreReqCode)){
+                                preReqCourseToTake = null;
+                                break;
+                            }
+                            Course preReqCourse = this.codeToCourse.get(coursePreReqCode);
+                            if(preReqCourse == null) throw new IllegalStateException("Course: "+coursePreReqCode+" doesn't seems to exist.");
+                            List<Integer> preReqCourseMove = computeMoveFromCourse(preReqCourse);
+                            if(moveLeft.containsKey(preReqCourseMove.toString())){
+                                preReqCourseToTake = preReqCourse;
+                                currSmallestCost = 0;
+                            }else{
+                                if(currSmallestCost > preReqCourse.credits){
+                                    currSmallestCost = preReqCourse.credits;
+                                    preReqCourseToTake = preReqCourse;
+                                }
+                            }
+                        }
+                        if(preReqCourseToTake != null && preReqComboCost > currSmallestCost){ //means we have found a req course to take
+                            preReqComboCost = currSmallestCost;
+                            bestPreReqCombo.add(preReqCourseToTake);
+                        }
+                    }
+                }
+
+                if(bestCourseCost > preReqComboCost){
+                    bestCourseCost = preReqComboCost;
+                    bestCourseToTake = bestPreReqCombo;
+                    bestCourseToTake.add(course);
+                }
+            }
+            //Now we add all of them
+            for(Course bestCourse : bestCourseToTake){
+                List<Integer> preReqCourseMove = computeMoveFromCourse(bestCourse);
+                String preReqCourseMoveString = preReqCourseMove.toString();
+                System.out.print("For move "+preReqCourseMoveString+", we take: "+bestCourse.code+"\n");
+                if(moveLeft.get(preReqCourseMoveString)!=null){
+                    int oldCount =  moveLeft.get(preReqCourseMoveString);
+                    moveLeft.replace(preReqCourseMove.toString(), oldCount-1);
+                }
+                result.add(bestCourse);
+                visited.add(bestCourse.code);
+            }
+            System.out.println();
+        }
+        return result;
     }
 
     private static HashMap<String, Integer> deepCopyHashMap(HashMap<String, Integer> original) {
@@ -360,8 +470,8 @@ public class CoursePathSearch {
     public static void main(String[] args) {
         Dataset dataset = new Dataset();
         dataset.readFile("version1/prerequisites.csv");
-        ArrayList<Course> csCourses = dataset.filterCourseByPrefix("CS", 100);
-        ArrayList<Course> dsCourses = dataset.filterCourseByPrefix("STAT", 100);
+        HashSet<Course> csCourses = dataset.filterCourseByPrefix("CS", 100);
+        HashSet<Course> dsCourses = dataset.filterCourseByPrefix("STAT", 100);
 
         int numberOfDegreeRequirements = dataset.numberOfDegreeRequirement("CS");
         numberOfDegreeRequirements += dataset.numberOfDegreeRequirement("DS");
@@ -382,7 +492,7 @@ public class CoursePathSearch {
         for(String degree:dataset.getDegree()){
             for(String degreeRequirement: dataset.getDegreeRequirements().get(degree)){
                 Random random = new Random();
-                int randomNumber = random.nextInt(20, 21);
+                int randomNumber = random.nextInt(20, 25);
                 int index = -1;
                 try{
                     index = categoryToIndex.get(degreeRequirement);
@@ -397,21 +507,39 @@ public class CoursePathSearch {
             }
         }
 
-    //     System.out.println("Start state:");
-    //     for(int categoriesValue : categoriesValues){
-    //         System.out.print(categoriesValue+" ");
-    //     }
-    //     courseSearch.setStartGoal(categoriesValues);
-    //     int[] targetState = new int[categoriesValues.length];
-    //     courseSearch.setTargetGoal(targetState);
-    //     System.out.println("\n");
+        System.out.println("Start state:");
+        for(int categoriesValue : categoriesValues){
+            System.out.print(categoriesValue+" ");
+        }
+        System.out.println();
+        
+        HashMap<Integer, String> intToCatHashMap = courseSearch.getIntToCatHashTable();
+        System.out.print("Category ordered in index: ");
+        for(Map.Entry<Integer, String> entry: intToCatHashMap.entrySet()){
+            String value = entry.getValue();
+            System.out.print(value+", ");
+        }
 
-    //     List<List<int[]>> bestCreComPath = courseSearch.computeShortestPath();
-    //     for(List<int[]> creComPath: bestCreComPath){
-    //         for(int[] creCom: creComPath){
-    //             System.out.println(Arrays.toString(creCom));
-    //         }
-    //         System.out.println();
-    //     }
+        courseSearch.setStartGoal(categoriesValues);
+        int[] targetState = new int[categoriesValues.length];
+        courseSearch.setTargetGoal(targetState);
+        System.out.println("\n");
+
+        List<List<int[]>> allCreComPath = courseSearch.computeShortestPath(); //This computes the big paths
+        List<List<int[]>> bestCreComPath = new ArrayList<List<int[]>>(); //The best path we computed
+        List<int[]> bestCreComList = new ArrayList<int[]>(); //The best moves to take in String
+        int i = allCreComPath.size()-1; //Set i as the final (When we reach end goal)
+        while(i>=0){// when i less than 0 means we get to the start state so stop
+            List<int[]> creComPath = allCreComPath.get(i); 
+            int parentIndex = creComPath.get(1)[0]; //Get the parent index and trace it back
+            bestCreComPath.add(creComPath);
+            bestCreComList.add(creComPath.get(2));
+            i=parentIndex;
+        }
+
+        List<Course> bestCourseToTake = courseSearch.computeBestCourseFromPath(bestCreComList);
+        for(Course bestCourse: bestCourseToTake){
+            System.out.println(bestCourse.code);
+        }
     }
 }

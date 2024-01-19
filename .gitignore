@@ -1,0 +1,9 @@
+algorithm_test
+data
+demo
+main
+web-app/postgres-data
+web-app/src/main/java/com/graduatebetter/component
+web-app/src/main/java/com/graduatebetter/config
+web-app/src/main/java/com/graduatebetter/
+web-app/src/main/resources/data

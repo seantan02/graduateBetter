@@ -1,10 +1,10 @@
-package com.graduate_better.main;
+package com.graduatebetter.webapp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MainApplicationTests {
+class WebAppApplicationTests {
 
 	@Test
 	void contextLoads() {

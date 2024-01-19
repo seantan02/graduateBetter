@@ -6,7 +6,11 @@ Graduate Better aims to help UW-Madison, and eventually all university, students
 
 ## Author
 
-- Tan Sio#ng Ann
+- Tan Siong Ann
+
+## Partner & Contributor
+
+- Anton Cheng, who is a current UW-Madison student and he helped brain-storming the algorithm of performing main computation. He was one of the early co-founder.
 
 ## Ownership
 

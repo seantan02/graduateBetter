@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  postgres:
+      image: postgres:latest
+      volumes:
+        - postgre-data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: graduate_better
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD: 7412563j
+      restart: always
+      healthcheck:
+        test: ["CMD", "pg_isready", "-q", "-d", "graduate_better", "-U", "admin"]
+        interval: 5s
+        timeout: 10s
+        retries: 5
+      ports:
+        - 5432:5432
+  graduate-better:
+    image: graduate-better/app:latest
+    depends_on:
+      - postgres
+    ports:
+      - 8080:8080
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 10
+        window: 120s
+
+volumes:
+  postgre-data:

@@ -2,8 +2,7 @@ algorithm_test
 data
 demo
 main
-web-app/src/*
-web-app/postgres-data
+web-app/*
 !web-app/src/main/java/com/graduatebetter/controller
 !web-app/src/main/java/com/graduatebetter/dto
 !web-app/src/main/java/com/graduatebetter/enum

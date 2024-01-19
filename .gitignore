@@ -1,8 +1,11 @@
 algorithm_test
 data
 demo
-main
-web-app/*
+web-app/.mvn
+web-app/.vscode
+web-app/postgres-data
+web-app/target
+web-app/src/main/java/com/graduatebetter/*
 !web-app/src/main/java/com/graduatebetter/controller
 !web-app/src/main/java/com/graduatebetter/dto
 !web-app/src/main/java/com/graduatebetter/enum
@@ -10,6 +13,7 @@ web-app/*
 !web-app/src/main/java/com/graduatebetter/repository
 !web-app/src/main/java/com/graduatebetter/service
 !web-app/src/main/java/com/graduatebetter/util
+web-app/src/main/resources/*
 !web-app/src/main/resources/static
 !web-app/src/main/resources/templates
 !web-app/src/main/resources/main-banner.txt

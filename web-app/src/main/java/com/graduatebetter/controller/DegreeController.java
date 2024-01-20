@@ -174,7 +174,7 @@ public class DegreeController {
 
         List<String> bestCourseCodeToTake = new ArrayList<String>();
         for(Course bestCourse: finalBestCourseToTake){
-            bestCourseCodeToTake.add(bestCourse.code);
+            bestCourseCodeToTake.add(bestCourse.code+", credits: "+bestCourse.credits);
         }
         Collections.sort(bestCourseCodeToTake); //sort it in alphabetical order
         return new ResponseEntity<List<String>>(bestCourseCodeToTake, HttpStatus.CREATED);

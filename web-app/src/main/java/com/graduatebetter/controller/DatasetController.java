@@ -12,6 +12,7 @@ import com.graduatebetter.dto.DegreeCourseRequest;
 import com.graduatebetter.service.CourseService;
 import com.graduatebetter.service.DegreeReqService;
 import com.graduatebetter.service.DegreeService;
+import com.graduatebetter.service.DisallowedCoursePairService;
 import com.graduatebetter.service.PreRequisiteGroupService;
 import com.graduatebetter.service.PreRequisiteService;
 import com.graduatebetter.util.Course;
@@ -36,12 +37,15 @@ public class DatasetController {
     @Autowired
     private PreRequisiteGroupService preRequisiteGroupService;
 
+    @Autowired
+    private DisallowedCoursePairService disallowedCoursePairService;
+
     private DegreeData degreeData = null;
 
     @PostMapping("/getCourse")
     public List<Course> getCourse() {
         if(this.degreeData == null){
-            this.degreeData = new DegreeData(this.courseService, this.degreeService, this.degreeReqService, this.preRequisiteService);
+            this.degreeData = new DegreeData(this.courseService, this.degreeService, this.degreeReqService, this.preRequisiteService, this.disallowedCoursePairService);
         }
         return this.degreeData.getCourses();
     }
@@ -49,7 +53,7 @@ public class DatasetController {
     @PostMapping("/getDegreeCourse")
     public List<Course> getDegreeCourse(@RequestBody DegreeCourseRequest request) {
         if(this.degreeData == null){
-            this.degreeData = new DegreeData(this.courseService, this.degreeService, this.degreeReqService, this.preRequisiteService);
+            this.degreeData = new DegreeData(this.courseService, this.degreeService, this.degreeReqService, this.preRequisiteService, this.disallowedCoursePairService);
         }
 
         this.degreeData.loadDegreeCourse(request.getDegree());
@@ -59,7 +63,7 @@ public class DatasetController {
     @PostMapping("/getDegreeCourseSize")
     public int getDegreeCourseSize(@RequestBody DegreeCourseRequest request) {
         if(this.degreeData == null){
-            this.degreeData = new DegreeData(this.courseService, this.degreeService, this.degreeReqService, this.preRequisiteService);
+            this.degreeData = new DegreeData(this.courseService, this.degreeService, this.degreeReqService, this.preRequisiteService, this.disallowedCoursePairService);
         }
         
         this.degreeData.loadDegreeCourse(request.getDegree());

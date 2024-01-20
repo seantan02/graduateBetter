@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.graduatebetter.model.CourseEntity;
 import com.graduatebetter.model.DegreeEntity;
 import com.graduatebetter.model.DegreeReqEntity;
+import com.graduatebetter.model.DisallowedCoursePairEntity;
 import com.graduatebetter.model.PreRequisiteEntity;
 import com.graduatebetter.model.PreRequisiteGroupEntity;
 import com.graduatebetter.service.CourseService;
 import com.graduatebetter.service.DegreeReqService;
 import com.graduatebetter.service.DegreeService;
+import com.graduatebetter.service.DisallowedCoursePairService;
 import com.graduatebetter.service.PreRequisiteGroupService;
 import com.graduatebetter.service.PreRequisiteService;
 import io.jsonwebtoken.io.IOException;
@@ -45,6 +47,9 @@ public class MainController {
 
     @Autowired
     private PreRequisiteGroupService preRequisiteGroupService;
+
+    @Autowired
+    private DisallowedCoursePairService disallowedCoursePairService;
 
     @Value("classpath:data/course/*")
     private Resource[] courseDatasetResources;
@@ -78,6 +83,7 @@ public class MainController {
                         try{
                             HashMap<Long, List<List<String>>> preRequisiteToAddAfter = new HashMap<Long, List<List<String>>>();
                             HashMap<Long, List<PreRequisiteGroupEntity>> preRequisiteGroupToBeUse = new HashMap<Long, List<PreRequisiteGroupEntity>>();
+                            HashMap<Long, List<String>> disallowedCoursePairToAddAfter = new HashMap<Long, List<String>>();
                             if (scanner.hasNextLine()) {
                                 scanner.nextLine(); // Skip the header
                             }
@@ -174,7 +180,7 @@ public class MainController {
                                     }
                                 }
                                 //Sixth column: Pre Requisites
-                                if(lineDetails.size() >= 5 && !lineDetails.get(5).equals("")){
+                                if(lineDetails.size() >= 6 && !lineDetails.get(5).equals("")){
                                     String[] splitByAnd = lineDetails.get(5).split("&");
                                     for(String splitByAndPart: splitByAnd){
                                         String[] requisites = splitByAndPart.split(","); //group of requisites
@@ -244,6 +250,52 @@ public class MainController {
                                         }
                                     }
                                 }
+                                //Seventh column: Disallowed Courses
+                                if(lineDetails.size() >= 7 && !lineDetails.get(6).equals("")){
+                                    String[] disallowedCourseCodes = lineDetails.get(6).split(","); //all of the disallowed course codes
+                                    Set<DisallowedCoursePairEntity> existingDisallowedCoursePairs = disallowedCoursePairService.selectDisallowedCoursePairByCourse(courseEntity); //select what current course has in database table "disallowed_course_pair"
+                                    for(String disallowedCourseCode: disallowedCourseCodes){
+                                        disallowedCourseCode = disallowedCourseCode.replaceAll("[{}]", "");
+                                        disallowedCourseCode = disallowedCourseCode.trim();
+                                        disallowedCourseCode = disallowedCourseCode.toUpperCase();
+                                        boolean disallowedCoursePairNotExist = true;
+                                        /*
+                                         * 1. For each disallowed course code, we select the course entity
+                                         * 2. If it exist then we check if it exist in our table "disallowed_course_pair"
+                                         * 3. If not exist, we add it
+                                         * 4. Skip if it already exists
+                                         * 5. If the disallowed course is not in our database yet, we add it later
+                                         */
+                                        CourseEntity disallowedCourseEntity = courseService.selectCourseByCode(disallowedCourseCode); //get the disallowed course
+                                        if(disallowedCourseEntity != null){ //if it exists in course table
+                                            if(existingDisallowedCoursePairs != null){
+                                                for(DisallowedCoursePairEntity existingDisallowedCoursePair: existingDisallowedCoursePairs){
+                                                    if(existingDisallowedCoursePair.getDisallowedCourseEntity().equals(disallowedCourseEntity)){
+                                                        disallowedCoursePairNotExist = false;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            if(disallowedCoursePairNotExist){ //if not exist in database and both course is available, we add it to database
+                                                DisallowedCoursePairEntity disallowedCoursePairEntity = new DisallowedCoursePairEntity();
+                                                disallowedCoursePairEntity.setCourseEntity(courseEntity);
+                                                disallowedCoursePairEntity.setDisallowedCourseEntity(disallowedCourseEntity);
+                                                disallowedCoursePairService.createDisallowedCoursePair(disallowedCoursePairEntity);
+                                            }
+                                        }else{ //create or add this code to the hashmap that we will go through after reading the entire file so we don't miss any
+                                            if(disallowedCoursePairToAddAfter.containsKey(courseEntity.getId())){
+                                                List<String> oldList = disallowedCoursePairToAddAfter.get(courseEntity.getId());
+                                                oldList.add(disallowedCourseCode);
+                                                disallowedCoursePairToAddAfter.replace(courseEntity.getId(), oldList);
+                                            }else{
+                                                List<String> newList = new ArrayList<String>();
+                                                newList.add(disallowedCourseCode);
+                                                disallowedCoursePairToAddAfter.put(courseEntity.getId(), newList);
+                                            }
+                                        }
+                                    }
+                                }
                                 courseEntity = courseService.updateCourse(courseEntity);
                                 degreeEntity = degreeService.updateDegree(degreeEntity);
                             }
@@ -294,7 +346,38 @@ public class MainController {
                                         }
                                     }
                                 }
-                                
+                            }
+                            //now we add the disallowed course pair that are not added because the course was not yet added to the database when we were looking at it
+                            for(HashMap.Entry<Long, List<String>> entry: disallowedCoursePairToAddAfter.entrySet()){
+                                Long key = entry.getKey();
+                                List<String> unaddedDisallowedCourseLists = entry.getValue();
+                                CourseEntity courseEntity = courseService.selectCourse(key);
+                                Set<DisallowedCoursePairEntity> existingDisallowedCoursePairs = disallowedCoursePairService.selectDisallowedCoursePairByCourse(courseEntity);
+                                for(int i=0;i<unaddedDisallowedCourseLists.size();i++){
+                                    String unaddedDisallowedCourseCode = unaddedDisallowedCourseLists.get(i);
+                                    CourseEntity unaddedDisallowedCourseEntity= courseService.selectCourseByCode(unaddedDisallowedCourseCode);
+                                    boolean disallowedCoursePairNotExist = true;
+
+                                    if(unaddedDisallowedCourseEntity != null){ //if it exists in course table
+                                        if(existingDisallowedCoursePairs != null){
+                                            for(DisallowedCoursePairEntity existingDisallowedCoursePair: existingDisallowedCoursePairs){
+                                                if(existingDisallowedCoursePair.getDisallowedCourseEntity().equals(unaddedDisallowedCourseEntity)){
+                                                    disallowedCoursePairNotExist = false;
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                        
+                                        if(disallowedCoursePairNotExist){ //if not exist in database and both course is available, we add it to database
+                                            DisallowedCoursePairEntity disallowedCoursePairEntity = new DisallowedCoursePairEntity();
+                                            disallowedCoursePairEntity.setCourseEntity(courseEntity);
+                                            disallowedCoursePairEntity.setDisallowedCourseEntity(unaddedDisallowedCourseEntity);
+                                            disallowedCoursePairService.createDisallowedCoursePair(disallowedCoursePairEntity);
+                                        }
+                                    }else{
+                                        throw new IllegalStateException("Unadded course pair still doesn't exist after scanning all files: "+unaddedDisallowedCourseCode);
+                                    }
+                                }
                             }
                         } catch (NumberFormatException e) {
                             e.printStackTrace();

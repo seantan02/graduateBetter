@@ -3,15 +3,18 @@ package com.graduatebetter.util;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import com.graduatebetter.model.CourseEntity;
 import com.graduatebetter.model.DegreeEntity;
 import com.graduatebetter.model.DegreeReqEntity;
+import com.graduatebetter.model.DisallowedCoursePairEntity;
 import com.graduatebetter.model.PreRequisiteEntity;
 import com.graduatebetter.model.PreRequisiteGroupEntity;
 import com.graduatebetter.service.CourseService;
 import com.graduatebetter.service.DegreeReqService;
 import com.graduatebetter.service.DegreeService;
+import com.graduatebetter.service.DisallowedCoursePairService;
 import com.graduatebetter.service.PreRequisiteService;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,13 +37,15 @@ public class DegreeData {
     private DegreeService degreeService;
     private DegreeReqService degreeReqService;
     private PreRequisiteService preRequisiteService;
+    private DisallowedCoursePairService disallowedCoursePairService;
 
     @Autowired
     public DegreeData(
             CourseService courseService,
             DegreeService degreeService,
             DegreeReqService degreeReqService,
-            PreRequisiteService preRequisiteService) {
+            PreRequisiteService preRequisiteService,
+            DisallowedCoursePairService disallowedCoursePairService) {
         this.numberOfCourses = 0;
         this.degree = new HashSet<String>();
         this.degreeToCourse = new HashMap<String, List<Course>>();
@@ -53,6 +58,20 @@ public class DegreeData {
         this.degreeService = degreeService;
         this.degreeReqService = degreeReqService;
         this.preRequisiteService = preRequisiteService;
+        this.disallowedCoursePairService = disallowedCoursePairService;
+    }
+    
+    public boolean loadAllCourse(){
+        try {
+            for (DegreeEntity degreeEntity : this.degreeService.getDegree()) {
+                if (!loadDegreeCourse(degreeEntity.getName())) {
+                    System.out.println("Failed to load for degree: "+degreeEntity.getName());
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+        return true;
     }
 
     public boolean loadDegreeCourse(String degree){
@@ -144,6 +163,16 @@ public class DegreeData {
                         if(requirementCredit != degreeReqEntity.getMinimumCredit()) throw new IllegalStateException("Degree requirement minimum credits are not the same for: "+uniqueRequirementName+" in degree: "+degree);
                     }
                 }
+
+                //set the disallowed course
+                Set<DisallowedCoursePairEntity> disallowedCourseEntities = disallowedCoursePairService.selectDisallowedCoursePairByCourse(courseEntity);
+                Set<String> disallowedCourseCodes = new HashSet<String>();
+                if(disallowedCourseEntities != null){
+                    for(DisallowedCoursePairEntity disallowedCourseEntity: disallowedCourseEntities){
+                        disallowedCourseCodes.add(courseService.selectCourse(disallowedCourseEntity.getDisallowedCourseEntity().getId()).getCode());
+                    }
+                }
+                course.setDisallowedCourses(disallowedCourseCodes);
                 this.numberOfCourses++;
                 this.degree.add(degree); //this is a hashset so adding duplicate is fine
             }

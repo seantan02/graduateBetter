@@ -65,7 +65,7 @@ public class DegreeData {
         try {
             for (DegreeEntity degreeEntity : this.degreeService.getDegree()) {
                 if (!loadDegreeCourse(degreeEntity.getName())) {
-                    System.out.println("Failed to load for degree: "+degreeEntity.getName());
+                    System.err.println("Failed to load for degree: "+degreeEntity.getName());
                 }
             }
         } catch (Exception e) {
@@ -77,6 +77,7 @@ public class DegreeData {
     public boolean loadDegreeCourse(String degree){
         //Read from database
         try {
+            degree = degree.strip();
             degree = degree.toUpperCase();
             if(this.degree.contains(degree)){ //if we have loaded it before, return
                 return true;
@@ -84,7 +85,6 @@ public class DegreeData {
             DegreeEntity degreeEntity = this.degreeService.selectDegreeByName(degree);
             Set<DegreeReqEntity> degreeReqEntities = degreeEntity.getDegreeReqEntities();
             Set<CourseEntity> courseEntities = degreeEntity.getCourseEntities();
-            // System.out.println("Load degree data for degree "+degreeEntity.getName()+", size for course: "+courseEntities.size());
             //Now we add the course to the hashmap for degree
             for(CourseEntity courseEntity: courseEntities){
                 String courseCode = courseEntity.getCode();
@@ -215,7 +215,6 @@ public class DegreeData {
     public HashSet<Course> filterCourseByDegree(String degree, int limit){
         HashSet<Course> filteredCourse = new HashSet<Course>();
         String capitalizedDegree = degree.toUpperCase();
-        System.out.println("Size of this.degreeToCourse = "+this.degreeToCourse.size());
         for(Course course:this.degreeToCourse.get(capitalizedDegree)){
             if(course == null){
                 System.err.println("Course is null for "+capitalizedDegree);
@@ -238,6 +237,13 @@ public class DegreeData {
             
         }
         return filteredCourse;
+    }
+
+    public int getDegreeNumberOfRequirement(String _degree) throws IllegalStateException{
+        _degree = _degree.strip();
+        _degree = _degree.toUpperCase();
+        if(!this.degree.contains(_degree)) throw new IllegalStateException("This dataset does not contain degree: "+_degree);
+        return this.degreeRequirements.get(_degree).size();
     }
 
     public int getTotalNumberOfRequirement(){

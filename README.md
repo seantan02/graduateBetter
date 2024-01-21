@@ -1,5 +1,8 @@
 # Graduate Better
 
+**ALERT. ATTENTION!**
+This is the first working beta version and this repository doesn't contain all components for you to download and copy and run it locally. For example, all the dataset for courses are not included. This is to protect the hardwork and dedication of our team especially the founder Sean Tan Siong Ann. This beta version will soon be run on AWS Docker and be available at some domain, please patiently wait for 1-2 weeks from now on, 01/19/2024. Thank you!
+
 ## Overview
 
 Graduate Better aims to help UW-Madison, and eventually all university, students to plan courses and maximize the gains in the shortest amount of time in college.

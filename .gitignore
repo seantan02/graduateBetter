@@ -1,6 +1,8 @@
 algorithm_test
 data
 demo
+web-app/Makefile
+web-app/docker-compose.yml
 web-app/.mvn
 web-app/.vscode
 web-app/postgres-data

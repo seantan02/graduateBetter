@@ -1,5 +1,6 @@
 runPostgre:
-	docker run -d --name postgres-container -e POSTGRES_DB=graduate_better -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=7412563j -p 5432:5432 postgres:latest
+	docker run -d --name postgres-container -e DATABASE_URL=jdbc:postgresql://postgres:5432/graduate_better -e 
+POSTGRES_DB=graduate_better -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=7412563j -p 5432:5432 postgres:latest
 refresh: dockerBuildImage
 	docker-compose up -d
 mavenCleanInstall:

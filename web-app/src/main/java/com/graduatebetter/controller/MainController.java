@@ -14,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.graduatebetter.model.CourseEntity;
 import com.graduatebetter.model.DegreeEntity;
 import com.graduatebetter.model.DegreeReqEntity;
+import com.graduatebetter.model.DisallowedCoursePairEntity;
 import com.graduatebetter.model.PreRequisiteEntity;
 import com.graduatebetter.model.PreRequisiteGroupEntity;
 import com.graduatebetter.service.CourseService;
 import com.graduatebetter.service.DegreeReqService;
 import com.graduatebetter.service.DegreeService;
+import com.graduatebetter.service.DisallowedCoursePairService;
 import com.graduatebetter.service.PreRequisiteGroupService;
 import com.graduatebetter.service.PreRequisiteService;
 import io.jsonwebtoken.io.IOException;
@@ -46,6 +48,9 @@ public class MainController {
     @Autowired
     private PreRequisiteGroupService preRequisiteGroupService;
 
+    @Autowired
+    private DisallowedCoursePairService disallowedCoursePairService;
+
     @Value("classpath:data/course/*")
     private Resource[] courseDatasetResources;
 
@@ -67,6 +72,9 @@ public class MainController {
     @PostMapping("/readAllCourseData")
     public ResponseEntity<String> readAllCourseData() {
         try{
+            HashMap<Long, List<List<String>>> preRequisiteToAddAfter = new HashMap<Long, List<List<String>>>();
+            HashMap<Long, List<PreRequisiteGroupEntity>> preRequisiteGroupToBeUse = new HashMap<Long, List<PreRequisiteGroupEntity>>();
+            HashMap<Long, List<String>> disallowedCoursePairToAddAfter = new HashMap<Long, List<String>>();
             for(Resource resource:courseDatasetResources){//readEachFile and run the algorithm
                 try {
                     // Get the InputStream
@@ -76,8 +84,6 @@ public class MainController {
                     // For example, you can read the content line by line
                     try (java.util.Scanner scanner = new java.util.Scanner(inputStream).useDelimiter("\\A")) {
                         try{
-                            HashMap<Long, List<List<String>>> preRequisiteToAddAfter = new HashMap<Long, List<List<String>>>();
-                            HashMap<Long, List<PreRequisiteGroupEntity>> preRequisiteGroupToBeUse = new HashMap<Long, List<PreRequisiteGroupEntity>>();
                             if (scanner.hasNextLine()) {
                                 scanner.nextLine(); // Skip the header
                             }
@@ -174,7 +180,7 @@ public class MainController {
                                     }
                                 }
                                 //Sixth column: Pre Requisites
-                                if(lineDetails.size() >= 5 && !lineDetails.get(5).equals("")){
+                                if(lineDetails.size() >= 6 && !lineDetails.get(5).equals("")){
                                     String[] splitByAnd = lineDetails.get(5).split("&");
                                     for(String splitByAndPart: splitByAnd){
                                         String[] requisites = splitByAndPart.split(","); //group of requisites
@@ -209,12 +215,22 @@ public class MainController {
                                                 PreRequisiteEntity preRequisiteEntity = new PreRequisiteEntity();
                                                 if(courseService.courseExistByCode(requisite)){ //we set it now
                                                     CourseEntity preRequisiteCourse = courseService.selectCourseByCode(requisite);
+                                                    /*MOST IMPORTANT CHECK: Pre-Requisite cannot be itself */
+                                                    if(courseEntity.getCode().equals(requisite) || courseEntity.equals(preRequisiteCourse)) throw new IllegalStateException("Pre-Requisite cannot be course it self.");
                                                     preRequisiteEntity.setCoursePreRequisiteEntity(preRequisiteCourse);
                                                     preRequisiteEntity.setPreRequisiteGroupEntity(currPreRequisiteGroup);
                                                     currPreRequisiteGroup.setCourseEntity(courseEntity);
                                                     currPreRequisiteGroup.getPreRequisiteEntities().add(preRequisiteEntity);
                                                     courseEntity.getPreRequisiteGroupEntity().add(currPreRequisiteGroup);
                                                     courseEntity.getPreRequisiteEntity().add(preRequisiteEntity);
+                                                    //make sure both requisite and course has the same degree so we don't need to keep rewriting it 
+                                                    for(DegreeEntity courseDegree: courseEntity.getDegreeEntity()){//go through the course for pre-requisite
+                                                        if(!preRequisiteCourse.getDegreeEntity().contains(courseDegree)){
+                                                            preRequisiteCourse.getDegreeEntity().add(courseDegree);
+                                                            courseDegree.getCourseEntities().add(preRequisiteCourse);
+                                                        }
+                                                    }
+
                                                     if(currPreRequisiteGroup.getId()==null) currPreRequisiteGroup = preRequisiteGroupService.createPreRequisiteGroup(currPreRequisiteGroup);//save group first
                                                     preRequisiteService.createPreRequisite(preRequisiteEntity);
                                                 }else{//we add it to to-do-list and do it later
@@ -244,58 +260,57 @@ public class MainController {
                                         }
                                     }
                                 }
-                                courseEntity = courseService.updateCourse(courseEntity);
-                                degreeEntity = degreeService.updateDegree(degreeEntity);
-                            }
-                            scanner.close();
-                            //now we add the prequisite that are not added because the requisite course was not yet added to the database when we were looking at it
-                            for(HashMap.Entry<Long, List<List<String>>> entry: preRequisiteToAddAfter.entrySet()){
-                                Long key = entry.getKey();
-                                List<List<String>> unaddedPreReqLists = entry.getValue();
-                                List<PreRequisiteGroupEntity> unaddedPreReqGroups = preRequisiteGroupToBeUse.get(key);
-                                CourseEntity courseEntity = courseService.selectCourse(key);
-                                for(int i=0;i<unaddedPreReqLists.size();i++){
-                                    List<String> unaddedPreReqList = unaddedPreReqLists.get(i);
-                                    PreRequisiteGroupEntity unaddedPreReqGroup = unaddedPreReqGroups.get(i);
-                                    for(String requisite: unaddedPreReqList){
-                                        boolean requisiteAlreadyAdded = false;
+                                //Seventh column: Disallowed Courses
+                                if(lineDetails.size() >= 7 && !lineDetails.get(6).equals("")){
+                                    String[] disallowedCourseCodes = lineDetails.get(6).split(","); //all of the disallowed course codes
+                                    Set<DisallowedCoursePairEntity> existingDisallowedCoursePairs = disallowedCoursePairService.selectDisallowedCoursePairByCourse(courseEntity); //select what current course has in database table "disallowed_course_pair"
+                                    for(String disallowedCourseCode: disallowedCourseCodes){
+                                        disallowedCourseCode = disallowedCourseCode.replaceAll("[{}]", "");
+                                        disallowedCourseCode = disallowedCourseCode.trim();
+                                        disallowedCourseCode = disallowedCourseCode.toUpperCase();
+                                        boolean disallowedCoursePairNotExist = true;
                                         /*
-                                        * 1. Check if this course already has this requisite added, skip if yes
-                                        * 2. Add if not
-                                        */
-                                        if(preRequisiteService.preRequisiteExist(courseEntity)){ //check if this course has existing requisites in DB
-                                            Set<PreRequisiteGroupEntity> preRequisiteGroups = courseEntity.getPreRequisiteGroupEntity();
-                                            for(PreRequisiteGroupEntity preRequisiteGroup: preRequisiteGroups){
-                                                Set<PreRequisiteEntity> preRequisiteEntities = preRequisiteGroup.getPreRequisiteEntities();
-                                                for(PreRequisiteEntity preRequisiteEntityInDB: preRequisiteEntities){ //Check if existing database has the current requisite we are looking at
-                                                    if(preRequisiteEntityInDB.getCoursePreRequisiteEntity().getCode().equals(requisite)){ //if yes, we set boolean to true and break
-                                                        requisiteAlreadyAdded = true;
+                                         * 1. For each disallowed course code, we select the course entity
+                                         * 2. If it exist then we check if it exist in our table "disallowed_course_pair"
+                                         * 3. If not exist, we add it
+                                         * 4. Skip if it already exists
+                                         * 5. If the disallowed course is not in our database yet, we add it later
+                                         */
+                                        CourseEntity disallowedCourseEntity = courseService.selectCourseByCode(disallowedCourseCode); //get the disallowed course
+                                        if(courseEntity.equals(disallowedCourseEntity) || courseEntity.getCode().toUpperCase().equals(disallowedCourseCode)) throw new IllegalStateException("Disallowed course can't be course itself: "+disallowedCourseEntity.getCode());
+                                        if(disallowedCourseEntity != null){ //if it exists in course table
+                                            if(existingDisallowedCoursePairs != null){
+                                                for(DisallowedCoursePairEntity existingDisallowedCoursePair: existingDisallowedCoursePairs){
+                                                    if(existingDisallowedCoursePair.getDisallowedCourseEntity().equals(disallowedCourseEntity)){
+                                                        disallowedCoursePairNotExist = false;
                                                         break;
                                                     }
                                                 }
                                             }
-                                        }
 
-                                        if(!requisiteAlreadyAdded){ //if the current requisite we are looking at is new then we will add it
-                                            PreRequisiteEntity preRequisiteEntity = new PreRequisiteEntity();
-                                            if(courseService.courseExistByCode(requisite)){ //we set it now
-                                                CourseEntity preRequisiteCourse = courseService.selectCourseByCode(requisite);
-                                                preRequisiteEntity.setCoursePreRequisiteEntity(preRequisiteCourse);
-                                                preRequisiteEntity.setPreRequisiteGroupEntity(unaddedPreReqGroup);
-                                                unaddedPreReqGroup.setCourseEntity(courseEntity);
-                                                unaddedPreReqGroup.getPreRequisiteEntities().add(preRequisiteEntity);
-                                                courseEntity.getPreRequisiteGroupEntity().add(unaddedPreReqGroup);
-                                                courseEntity.getPreRequisiteEntity().add(preRequisiteEntity);
-                                                if(unaddedPreReqGroup.getId()==null) preRequisiteGroupService.createPreRequisiteGroup(unaddedPreReqGroup);//save group first
-                                                preRequisiteService.createPreRequisite(preRequisiteEntity);
+                                            if(disallowedCoursePairNotExist){ //if not exist in database and both course is available, we add it to database
+                                                DisallowedCoursePairEntity disallowedCoursePairEntity = new DisallowedCoursePairEntity();
+                                                disallowedCoursePairEntity.setCourseEntity(courseEntity);
+                                                disallowedCoursePairEntity.setDisallowedCourseEntity(disallowedCourseEntity);
+                                                disallowedCoursePairService.createDisallowedCoursePair(disallowedCoursePairEntity);
+                                            }
+                                        }else{ //create or add this code to the hashmap that we will go through after reading the entire file so we don't miss any
+                                            if(disallowedCoursePairToAddAfter.containsKey(courseEntity.getId())){
+                                                List<String> oldList = disallowedCoursePairToAddAfter.get(courseEntity.getId());
+                                                oldList.add(disallowedCourseCode);
+                                                disallowedCoursePairToAddAfter.replace(courseEntity.getId(), oldList);
                                             }else{
-                                                System.err.println("Course for requisite: "+requisite+" doesn't exist");
+                                                List<String> newList = new ArrayList<String>();
+                                                newList.add(disallowedCourseCode);
+                                                disallowedCoursePairToAddAfter.put(courseEntity.getId(), newList);
                                             }
                                         }
                                     }
                                 }
-                                
+                                courseEntity = courseService.updateCourse(courseEntity);
+                                degreeEntity = degreeService.updateDegree(degreeEntity);
                             }
+                            scanner.close();
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
@@ -307,6 +322,94 @@ public class MainController {
                     // Handle exceptions, e.g., file not found, etc.
                     e.printStackTrace();
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
+                }
+            }
+            //now we add the prequisite that are not added because the requisite course was not yet added to the database when we were looking at it
+            for(HashMap.Entry<Long, List<List<String>>> entry: preRequisiteToAddAfter.entrySet()){
+                Long key = entry.getKey();
+                List<List<String>> unaddedPreReqLists = entry.getValue();
+                List<PreRequisiteGroupEntity> unaddedPreReqGroups = preRequisiteGroupToBeUse.get(key);
+                CourseEntity courseEntity = courseService.selectCourse(key);
+                for(int i=0;i<unaddedPreReqLists.size();i++){
+                    List<String> unaddedPreReqList = unaddedPreReqLists.get(i);
+                    PreRequisiteGroupEntity unaddedPreReqGroup = unaddedPreReqGroups.get(i);
+                    for(String requisite: unaddedPreReqList){
+                        boolean requisiteAlreadyAdded = false;
+                        /*
+                        * 1. Check if this course already has this requisite added, skip if yes
+                        * 2. Add if not
+                        */
+                        if(preRequisiteService.preRequisiteExist(courseEntity)){ //check if this course has existing requisites in DB
+                            Set<PreRequisiteGroupEntity> preRequisiteGroups = courseEntity.getPreRequisiteGroupEntity();
+                            for(PreRequisiteGroupEntity preRequisiteGroup: preRequisiteGroups){
+                                Set<PreRequisiteEntity> preRequisiteEntities = preRequisiteGroup.getPreRequisiteEntities();
+                                for(PreRequisiteEntity preRequisiteEntityInDB: preRequisiteEntities){ //Check if existing database has the current requisite we are looking at
+                                    if(preRequisiteEntityInDB.getCoursePreRequisiteEntity().getCode().equals(requisite)){ //if yes, we set boolean to true and break
+                                        requisiteAlreadyAdded = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if(!requisiteAlreadyAdded){ //if the current requisite we are looking at is new then we will add it
+                            PreRequisiteEntity preRequisiteEntity = new PreRequisiteEntity();
+                            if(courseService.courseExistByCode(requisite)){ //we set it now
+                                CourseEntity preRequisiteCourse = courseService.selectCourseByCode(requisite);
+                                preRequisiteEntity.setCoursePreRequisiteEntity(preRequisiteCourse);
+                                preRequisiteEntity.setPreRequisiteGroupEntity(unaddedPreReqGroup);
+                                unaddedPreReqGroup.setCourseEntity(courseEntity);
+                                unaddedPreReqGroup.getPreRequisiteEntities().add(preRequisiteEntity);
+                                courseEntity.getPreRequisiteGroupEntity().add(unaddedPreReqGroup);
+                                courseEntity.getPreRequisiteEntity().add(preRequisiteEntity);
+                                //make sure both requisite and course has the same degree so we don't need to keep rewriting it 
+                                for(DegreeEntity courseDegree: courseEntity.getDegreeEntity()){//go through the course for pre-requisite
+                                    if(!preRequisiteCourse.getDegreeEntity().contains(courseDegree)){
+                                        preRequisiteCourse.getDegreeEntity().add(courseDegree);
+                                        courseDegree.getCourseEntities().add(preRequisiteCourse);
+                                    }
+                                }
+
+                                if(unaddedPreReqGroup.getId()==null) preRequisiteGroupService.createPreRequisiteGroup(unaddedPreReqGroup);//save group first
+                                preRequisiteService.createPreRequisite(preRequisiteEntity);
+                            }else{
+                                System.err.println("Course for requisite: "+requisite+" doesn't exist");
+                            }
+                        }
+                    }
+                }
+            }
+            //now we add the disallowed course pair that are not added because the course was not yet added to the database when we were looking at it
+            for(HashMap.Entry<Long, List<String>> entry: disallowedCoursePairToAddAfter.entrySet()){
+                Long key = entry.getKey();
+                List<String> unaddedDisallowedCourseLists = entry.getValue();
+                CourseEntity courseEntity = courseService.selectCourse(key);
+                Set<DisallowedCoursePairEntity> existingDisallowedCoursePairs = disallowedCoursePairService.selectDisallowedCoursePairByCourse(courseEntity);
+                for(int i=0;i<unaddedDisallowedCourseLists.size();i++){
+                    String unaddedDisallowedCourseCode = unaddedDisallowedCourseLists.get(i);
+                    CourseEntity unaddedDisallowedCourseEntity= courseService.selectCourseByCode(unaddedDisallowedCourseCode);
+                    boolean disallowedCoursePairNotExist = true;
+
+                    if(unaddedDisallowedCourseEntity != null){ //if it exists in course table
+                        if(existingDisallowedCoursePairs != null){
+                            for(DisallowedCoursePairEntity existingDisallowedCoursePair: existingDisallowedCoursePairs){
+                                if(existingDisallowedCoursePair.getDisallowedCourseEntity().equals(unaddedDisallowedCourseEntity)){
+                                    disallowedCoursePairNotExist = false;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        if(disallowedCoursePairNotExist){ //if not exist in database and both course is available, we add it to database
+                            DisallowedCoursePairEntity disallowedCoursePairEntity = new DisallowedCoursePairEntity();
+                            disallowedCoursePairEntity.setCourseEntity(courseEntity);
+                            disallowedCoursePairEntity.setDisallowedCourseEntity(unaddedDisallowedCourseEntity);
+                            disallowedCoursePairService.createDisallowedCoursePair(disallowedCoursePairEntity);
+                        }
+                    }else{
+                        IllegalStateException e = new IllegalStateException("Unadded course pair still doesn't exist after scanning all files: "+unaddedDisallowedCourseCode);
+                        e.printStackTrace();
+                    }
                 }
             }
             return ResponseEntity.status(HttpStatus.ACCEPTED).body("Accepted");
@@ -378,7 +481,6 @@ public class MainController {
                                 Set<DegreeReqEntity> existingDegreeReqs = degreeEntity.getDegreeReqEntities();
                                 DegreeReqEntity degreeReqEntity = new DegreeReqEntity(); //create a new degreeRequirementEntity
                                 for(DegreeReqEntity existingDegreeReq: existingDegreeReqs){
-                                    System.out.println(existingDegreeReq.getName());
                                     if(existingDegreeReq.getName().equals(degreeReqCat)){ //degree name matches
                                         degreeReqEntity = existingDegreeReq; //we assign it to current variable name
                                         break;

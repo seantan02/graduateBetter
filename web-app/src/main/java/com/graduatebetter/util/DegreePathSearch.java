@@ -7,9 +7,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
-import java.util.Random;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +20,7 @@ import lombok.Setter;
 public class DegreePathSearch {
     private HashSet<Course> courseList; //Assume every course in the list is unique
     private Set<Course> shortestCoursesPath;
+    private Set<String> setOfDegree;
     private HashMap<String, Course> codeToCourse;
     private HashMap<String, List<String>> courseToRequisite;
     private HashMap<String, Set<String>> requisiteToCourse;
@@ -36,8 +35,9 @@ public class DegreePathSearch {
     private int categoryId = 0;
     private int numberOfCategories;
 
-    public DegreePathSearch(int _numberOfCategories){
+    public DegreePathSearch(int _numberOfCategories, Set<String> _setOfDegree){
         this.numberOfCategories = _numberOfCategories;
+        this.setOfDegree = _setOfDegree;
         this.courseList = new HashSet<Course>();
         this.shortestCoursesPath = new HashSet<Course>();
         this.codeToCourse = new HashMap<String, Course>();
@@ -51,7 +51,7 @@ public class DegreePathSearch {
         this.categoryToInt = new HashMap<String, Integer>();
     }
     public DegreePathSearch(){
-        this(0);
+        this(0, new HashSet<String>());
     }
 
     private List<Integer> computeMoveFromCourse(Course _course){
@@ -63,6 +63,7 @@ public class DegreePathSearch {
         if(_course.majorSatisfiedCategories != null){
             for(HashMap.Entry<String, HashSet<String>> entry: _course.majorSatisfiedCategories.entrySet()){
                 String key = entry.getKey();
+                if(!this.setOfDegree.contains(key)) continue; //prevent a course with other degree we dont care to mess up our array
                 key = key.replaceAll("\\s", "");
                 HashSet<String> value = entry.getValue();
                 for(String category : value){
@@ -151,9 +152,7 @@ public class DegreePathSearch {
         if(_course == null) return;
         if(this.codeToCourse.containsKey(_course.code)) return;
         this.courseList.add(_course);
-        System.out.print("Added to courseList, ");
         this.codeToCourse.put(_course.code, _course);
-        System.out.print("Put into codeToCourse, ");
         for(List<String> courseRequisite: _course.preRequesites){
             this.courseToRequisite.put(_course.code, courseRequisite);
             for(String requisite:courseRequisite){
@@ -177,15 +176,21 @@ public class DegreePathSearch {
             creditCombinationArray.add(0);
             count++;
         }
-
+        StringUtil stringUtil = new StringUtil();
         for(HashMap.Entry<String, HashSet<String>> satisfiedCategories: _course.majorSatisfiedCategories.entrySet()){
             String satisfiedCategoriesMajor = satisfiedCategories.getKey();
+            satisfiedCategoriesMajor = satisfiedCategoriesMajor.strip();
+            satisfiedCategoriesMajor = satisfiedCategoriesMajor.toUpperCase();
             HashSet<String> satisfiedCategoriesSet = satisfiedCategories.getValue();
+            if(!this.setOfDegree.contains(satisfiedCategoriesMajor)){
+                continue;
+            }else{
+            }
+
             for(String satisfiedCategory: satisfiedCategoriesSet){
                 String satisfiedCategoriesMajorWithoutSpace = satisfiedCategoriesMajor.replaceAll("\\s", "");
-                String uniqueCat = satisfiedCategoriesMajorWithoutSpace+satisfiedCategory;
+                String uniqueCat = stringUtil.getUniqueDegreeCatString(satisfiedCategoriesMajorWithoutSpace, satisfiedCategory);
                 if(!this.categoryToInt.containsKey(uniqueCat)){
-                    System.out.print("For "+uniqueCat+", we adde to categoryToInt at index"+this.categoryId+", ");
                     this.categoryToInt.put(uniqueCat,this.categoryId);
                     this.intToCategory.put(this.categoryId, uniqueCat);
                     this.categoryId++; //make sure our category id is unique
@@ -247,6 +252,7 @@ public class DegreePathSearch {
         List<HashMap<String, List<Integer>>> possibleMoves = new ArrayList<HashMap<String, List<Integer>>>();
         List<HashMap<String, Integer>> possibleCount = new ArrayList<HashMap<String, Integer>>();
         Set<String> visited = new HashSet<String>();
+        Set<String> visitedCourse = new HashSet<String>();
         PriorityQueue<List<int[]>> nextBestMoves = new PriorityQueue<>(Comparator.comparingInt(
                 list -> list.get(1)[list.get(1).length - 1]
         ));
@@ -275,10 +281,6 @@ public class DegreePathSearch {
             int nextBestStateParentIndex = nextBestStateDetails[0];
             int[] moveTaken = nextBestMove.get(2);
 
-            System.out.print("Next best state: "+Arrays.toString(nextBestState));
-            // System.out.print(", Next best state parent index :"+nextBestStateParentIndex);
-            // System.out.print(", Move taken: "+Arrays.toString(moveTaken));
-
             //add to visited
             if(!visited.contains(Arrays.toString(nextBestState))){
                 //keep track of credit combo count
@@ -292,6 +294,31 @@ public class DegreePathSearch {
                     }else{
                         newPossibleCount.replace(Arrays.toString(moveTaken), oldCount-1);
                     }
+                    //now we have to take out the move for the disallowed course so we wont be able to take disallowed course
+                    List<Course> creComPathCourseList = this.creditCombinationToCourses.get(Arrays.toString(moveTaken));
+                    for(Course creComPathCourse: creComPathCourseList){
+                        if(creComPathCourse.getDisallowedCourses() != null && creComPathCourse.getDisallowedCourses().size() > 0){ //only continue if there's a disallowed list
+                            if(!visitedCourse.contains(creComPathCourse.getCode())){
+                                for(String disallowedCourseCode: creComPathCourse.getDisallowedCourses()){
+                                    Course disallowedCourse = this.codeToCourse.get(disallowedCourseCode);
+                                    List<Integer> disallowedMove = computeMoveFromCourse(disallowedCourse);
+
+                                    if(newPossibleCount.get(disallowedMove.toString()) != null){
+                                        int disallowedMoveOldCount = newPossibleCount.get(disallowedMove.toString());
+                                        if(disallowedMoveOldCount == 1){
+                                            newPossibleMoves.remove(disallowedMove.toString());
+                                            newPossibleCount.remove(disallowedMove.toString());
+                                        }else{
+                                            newPossibleCount.replace(disallowedMove.toString(), disallowedMoveOldCount-1);
+                                        }
+                                        visitedCourse.add(disallowedCourseCode);
+                                    }
+                                    
+                                }
+                                visitedCourse.add(creComPathCourse.getCode());
+                            }
+                        }
+                    }
 
                     possibleMoves.add(newPossibleMoves);
                     possibleCount.add(newPossibleCount);
@@ -303,7 +330,6 @@ public class DegreePathSearch {
             }
 
             HashMap<String, List<Integer>> possibleMove = possibleMoves.get(parentIndex);
-            // System.out.println("Possible moves: "+possibleMove.size());
             List<List<int[]>> successors = getSuccessor(nextBestState, possibleMove);
             for(List<int[]> successor:successors){
                 int[] successorDetail = new int[4];
@@ -325,13 +351,12 @@ public class DegreePathSearch {
                     }
                 }
             }
-            System.out.println();
             currentState = nextBestState;
         }
         return bestCreditComPath;
     }
 
-    private HashMap<Integer, List<Course>> bestPrequisiteCourseCombo(Course _course, HashSet<String> visited, HashMap<String, Integer> moveLeft){
+    private HashMap<Integer, List<Course>> bestPrequisiteCourseCombo(Course _course, HashSet<String> visited, HashSet<String> disallowed, HashMap<String, Integer> moveLeft){
         int preReqComboCost = Integer.MAX_VALUE;
         List<Course> bestPreReqCombo = new ArrayList<Course>();
         List<List<String>> coursePreReqs = _course.preRequesites;
@@ -363,6 +388,7 @@ public class DegreePathSearch {
                     Course preReqCourse = this.codeToCourse.get(coursePreReqCode);
                     // if(preReqCourse == null) throw new IllegalStateException("Course: "+coursePreReqCode+" doesn't seems to exist.");
                     if(preReqCourse == null) continue;
+                    if(disallowed.contains(preReqCourse.code)) continue; //if it's not allowed then skip
                     List<Integer> preReqCourseMove = computeMoveFromCourse(preReqCourse);
                     if(moveLeft.containsKey(preReqCourseMove.toString())){
                         preReqCourseToTake = preReqCourse;
@@ -376,7 +402,10 @@ public class DegreePathSearch {
                 }
                 if(preReqCourseToTake != null){ //means we have found a req course to take
                     preReqComboCost = currSmallestCost;
-                    HashMap<Integer, List<Course>> predecessor = bestPrequisiteCourseCombo(preReqCourseToTake, visited, moveLeft);
+                    for(String disallowedCourseCode: preReqCourseToTake.getDisallowedCourses()){ //add all the disallowed course
+                        disallowed.add(disallowedCourseCode);
+                    }
+                    HashMap<Integer, List<Course>> predecessor = bestPrequisiteCourseCombo(preReqCourseToTake, visited, disallowed, moveLeft);
                     for(HashMap.Entry<Integer, List<Course>> entry: predecessor.entrySet()){//always have only 1 entry set
                         preReqComboCost += entry.getKey();
                         bestPreReqCombo = entry.getValue();
@@ -395,6 +424,7 @@ public class DegreePathSearch {
         HashMap<String, List<Course>> creditCombinationToCourses = this.creditCombinationToCourses;
         List<Course> result = new ArrayList<Course>();
         HashSet<String> visited = new HashSet<String>();
+        HashSet<String> disallowed = new HashSet<String>();
         HashMap<String, Integer> moveLeft = new HashMap<String, Integer>();
 
         for(int[] move: credComMove){ //compute the Hash Table that maps move to the remaining needed number
@@ -418,11 +448,12 @@ public class DegreePathSearch {
                 List<Course> bestPreReqCombo = new ArrayList<Course>();
                 int preReqComboCost = Integer.MAX_VALUE;
                 if(visited.contains(course.code)) continue;
+                if(disallowed.contains(course.code)) continue;
                 if(course.preRequesites.size() == 0 || course.preRequesites.get(0).size() == 0){ //no requisite
                     preReqComboCost = 0;
                 }else{
                     /* We should either have a recursive here or just a while loop */
-                    HashMap<Integer, List<Course>> comboToTake = bestPrequisiteCourseCombo(course, visited, moveLeft);
+                    HashMap<Integer, List<Course>> comboToTake = bestPrequisiteCourseCombo(course, visited, disallowed, moveLeft);
                     for(HashMap.Entry<Integer, List<Course>> entry: comboToTake.entrySet()){//always have only 1 entry set
                         preReqComboCost = entry.getKey();
                         bestPreReqCombo = entry.getValue();
@@ -446,6 +477,9 @@ public class DegreePathSearch {
                 }
                 result.add(bestCourse);
                 visited.add(bestCourse.code);
+                for(String disallowedCourseCode: bestCourse.getDisallowedCourses()){ //add all the disallowed course
+                    disallowed.add(disallowedCourseCode);
+                }
             }
         }
         return result;

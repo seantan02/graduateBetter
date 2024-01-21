@@ -18,19 +18,17 @@ import com.graduatebetter.model.DegreeEntity;
 import com.graduatebetter.service.CourseService;
 import com.graduatebetter.service.DegreeReqService;
 import com.graduatebetter.service.DegreeService;
+import com.graduatebetter.service.DisallowedCoursePairService;
 import com.graduatebetter.service.PreRequisiteGroupService;
 import com.graduatebetter.service.PreRequisiteService;
 import com.graduatebetter.util.Course;
 import com.graduatebetter.util.DegreeData;
 import com.graduatebetter.util.DegreePathSearch;
 import com.graduatebetter.util.StringUtil;
-
 import jakarta.annotation.PostConstruct;
-
 @RestController
 @RequestMapping("/api/v1/degree")
 public class DegreeController {
-
     @Autowired
     private CourseService courseService;
 
@@ -46,26 +44,40 @@ public class DegreeController {
     @Autowired
     private PreRequisiteGroupService preRequisiteGroupService;
 
+    @Autowired
+    private DisallowedCoursePairService disallowedCoursePairService;
+
     private DegreeData degreeData;
 
-    @PostConstruct
-    private void init() {
-        this.degreeData = new DegreeData(this.courseService, this.degreeService, this.degreeReqService, this.preRequisiteService);
-    }
-
-    @PostMapping("getAll")
-    public List<DegreeEntity> getAllDegree() {
-        return degreeService.getDegree();
+    @PostMapping("/getAll")
+    public ResponseEntity<List<DegreeEntity>> getAllDegrees() {
+        List<DegreeEntity> degrees = degreeService.getDegree();
+    
+        if (degrees.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(degrees, HttpStatus.OK);
+        }
     }
     
     @PostMapping("/getShortestPath")
     public ResponseEntity<List<String>> getShortestPath(@RequestBody DegreePathRequest request) {
+        if(this.degreeData == null){ //to initiate it once and for all
+            this.degreeData = new DegreeData(this.courseService, this.degreeService, this.degreeReqService, this.preRequisiteService, this.disallowedCoursePairService);
+        }
+
+        if(this.degreeData.getCourses().size() ==0 || this.degreeData.getDegree().size() == 0){
+            this.degreeData.loadAllCourse();
+        }
+
         List<String> degreeIdStrings = request.getDegreeIds();
         Set<String> degreeNameSet = new HashSet<String>();
         if(request.getDegreeIds().size() <=1){ //error because it has to be more than 1
             System.err.println("Please provide more than 1 degree to compute the shortest path.");
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+
+        int numberOfDegreeRequirements = 0;
 
         for(String degreeIdString: degreeIdStrings){
             Long degreeId = Long.parseLong(degreeIdString);
@@ -74,17 +86,15 @@ public class DegreeController {
             degreeName = degreeName.toUpperCase();
             degreeData.loadDegreeCourse(degreeName);
             degreeNameSet.add(degreeName);
+            numberOfDegreeRequirements += this.degreeData.getDegreeNumberOfRequirement(degreeName);
         }
 
         if(degreeNameSet.size() != degreeIdStrings.size()){ //using size of set we can tell if original given list of string are unique, if not we reject it.
             System.err.println("Please provide atleast 2 unique degree ID to compute the shortest path.");
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+        DegreePathSearch courseSearch = new DegreePathSearch(numberOfDegreeRequirements, degreeNameSet);
 
-        int numberOfDegreeRequirements = degreeData.getTotalNumberOfRequirement();
-        System.out.println("Total number of degree requirements: "+numberOfDegreeRequirements);
-        DegreePathSearch courseSearch = new DegreePathSearch(numberOfDegreeRequirements);
-        
         for(String degreeName: degreeNameSet){
             for(Course _course: degreeData.filterCourseByDegree(degreeName, 99999)){
                 courseSearch.addCourse(_course);
@@ -92,25 +102,23 @@ public class DegreeController {
         }
 
         HashMap<String, Integer> categoryToIndex = courseSearch.getCategoryToInt();
-        System.out.println(categoryToIndex.size());
-        int[] categoriesValues = new int[categoryToIndex.size()];
+        int[] categoriesValues = new int[numberOfDegreeRequirements];
         StringUtil stringUtil = new StringUtil();
         for(String degreeName: degreeNameSet){
-            for(String requirement: degreeData.getDegreeRequirements().get(degreeName)){
+            for(String requirement: this.degreeData.getDegreeRequirements().get(degreeName)){
                 String categoryName = stringUtil.getUniqueDegreeCatString(degreeName, requirement);
 
-                int neededCredit = degreeData.getRequirementToCredit().get(categoryName);
+                int neededCredit = this.degreeData.getRequirementToCredit().get(categoryName);
                 int index = -1;
 
                 try{
-                    System.out.println("Category name : "+categoryName);
                     index = categoryToIndex.get(categoryName);
                 }catch(Exception e){
                     System.err.println(e);
                 }
                 //If no category found
                 if(index == -1){
-                    System.out.println("No classes have satisfy "+requirement+". Impossible.");
+                    System.err.println("No classes have satisfy "+requirement+". Impossible.");
                     break;
                 }
                 categoriesValues[index] = neededCredit;
@@ -141,7 +149,7 @@ public class DegreeController {
         int smallestCredit = Integer.MAX_VALUE;
         List<Course> finalBestCourseToTake = new ArrayList<Course>();
         Set<List<int[]>> visitedCreComArrangements = new HashSet<List<int[]>>();
-        for(int repeat=3000;repeat>0;repeat--){
+        for(int repeat=5000;repeat>0;repeat--){
             int bestTotalCredit = 0;
             Collections.shuffle(bestCreComList);
             if(visitedCreComArrangements.add(bestCreComList)){
@@ -162,7 +170,7 @@ public class DegreeController {
 
         List<String> bestCourseCodeToTake = new ArrayList<String>();
         for(Course bestCourse: finalBestCourseToTake){
-            bestCourseCodeToTake.add(bestCourse.code);
+            bestCourseCodeToTake.add(bestCourse.code+", credits: "+bestCourse.credits);
         }
         Collections.sort(bestCourseCodeToTake); //sort it in alphabetical order
         return new ResponseEntity<List<String>>(bestCourseCodeToTake, HttpStatus.CREATED);
@@ -170,12 +178,22 @@ public class DegreeController {
 
     @PostMapping("/getSmallestCredit")
     public ResponseEntity<Integer> getSmallestCredit(@RequestBody DegreePathRequest request) {
+        if(this.degreeData == null){ //to initiate it once and for all
+            this.degreeData = new DegreeData(this.courseService, this.degreeService, this.degreeReqService, this.preRequisiteService, this.disallowedCoursePairService);
+        }
+
+        if(this.degreeData.getCourses().size() ==0 || this.degreeData.getDegree().size() == 0){
+            this.degreeData.loadAllCourse();
+        }
+
         List<String> degreeIdStrings = request.getDegreeIds();
         Set<String> degreeNameSet = new HashSet<String>();
         if(request.getDegreeIds().size() <=1){ //error because it has to be more than 1
             System.err.println("Please provide more than 1 degree to compute the shortest path.");
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+
+        int numberOfDegreeRequirements = 0;
 
         for(String degreeIdString: degreeIdStrings){
             Long degreeId = Long.parseLong(degreeIdString);
@@ -184,16 +202,15 @@ public class DegreeController {
             degreeName = degreeName.toUpperCase();
             degreeData.loadDegreeCourse(degreeName);
             degreeNameSet.add(degreeName);
+            numberOfDegreeRequirements += this.degreeData.getDegreeNumberOfRequirement(degreeName);
         }
 
         if(degreeNameSet.size() != degreeIdStrings.size()){ //using size of set we can tell if original given list of string are unique, if not we reject it.
             System.err.println("Please provide atleast 2 unique degree ID to compute the shortest path.");
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+        DegreePathSearch courseSearch = new DegreePathSearch(numberOfDegreeRequirements, degreeNameSet);
 
-        int numberOfDegreeRequirements = degreeData.getTotalNumberOfRequirement();
-        DegreePathSearch courseSearch = new DegreePathSearch(numberOfDegreeRequirements);
-        
         for(String degreeName: degreeNameSet){
             for(Course _course: degreeData.filterCourseByDegree(degreeName, 99999)){
                 courseSearch.addCourse(_course);
@@ -201,25 +218,23 @@ public class DegreeController {
         }
 
         HashMap<String, Integer> categoryToIndex = courseSearch.getCategoryToInt();
-        System.out.println(categoryToIndex.size());
-        int[] categoriesValues = new int[categoryToIndex.size()];
+        int[] categoriesValues = new int[numberOfDegreeRequirements];
         StringUtil stringUtil = new StringUtil();
         for(String degreeName: degreeNameSet){
-            for(String requirement: degreeData.getDegreeRequirements().get(degreeName)){
+            for(String requirement: this.degreeData.getDegreeRequirements().get(degreeName)){
                 String categoryName = stringUtil.getUniqueDegreeCatString(degreeName, requirement);
 
-                int neededCredit = degreeData.getRequirementToCredit().get(categoryName);
+                int neededCredit = this.degreeData.getRequirementToCredit().get(categoryName);
                 int index = -1;
 
                 try{
-                    System.out.println("Category name : "+categoryName);
                     index = categoryToIndex.get(categoryName);
                 }catch(Exception e){
                     System.err.println(e);
                 }
                 //If no category found
                 if(index == -1){
-                    System.out.println("No classes have satisfy "+requirement+". Impossible.");
+                    System.err.println("No classes have satisfy "+requirement+". Impossible.");
                     break;
                 }
                 categoriesValues[index] = neededCredit;

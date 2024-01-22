@@ -143,7 +143,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-cQsZAX3sMCA8j8Y7t5vZEtTh5c0M4pweKqf8R+ii/DKpq0RmQqLm8U1oHvcf51h6" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script>
-    var ipAddress = "localhost"
+    // Get the current hostname (domain)
+    var hostname = window.location.hostname;
+
+    // Construct the URL with the protocol and IP address
+    var ipAddress = window.location.protocol + '//' + hostname;
+
     var maxSelections = 3;
     var authToken = "AEaEdlOAratHeNASsaeHDlUwTHrCLErtVinIhaONhPNeEhwNHtsIgTLNDSoSE";  // Replace with your actual authentication token
 

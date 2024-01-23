@@ -25,7 +25,7 @@ import com.graduatebetter.util.Course;
 import com.graduatebetter.util.DegreeData;
 import com.graduatebetter.util.DegreePathSearch;
 import com.graduatebetter.util.StringUtil;
-import jakarta.annotation.PostConstruct;
+
 @RestController
 @RequestMapping("/api/v1/degree")
 public class DegreeController {
@@ -46,6 +46,9 @@ public class DegreeController {
 
     @Autowired
     private DisallowedCoursePairService disallowedCoursePairService;
+
+    @Autowired
+    private DegreePathSearch degreePathSearch;
 
     private DegreeData degreeData;
 
@@ -93,15 +96,16 @@ public class DegreeController {
             System.err.println("Please provide atleast 2 unique degree ID to compute the shortest path.");
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        DegreePathSearch courseSearch = new DegreePathSearch(numberOfDegreeRequirements, degreeNameSet);
+        this.degreePathSearch.setNumberOfCategories(numberOfDegreeRequirements);
+        this.degreePathSearch.setSetOfDegree(degreeNameSet);
 
         for(String degreeName: degreeNameSet){
             for(Course _course: degreeData.filterCourseByDegree(degreeName, 99999)){
-                courseSearch.addCourse(_course);
+                this.degreePathSearch.addCourse(_course);
             }
         }
 
-        HashMap<String, Integer> categoryToIndex = courseSearch.getCategoryToInt();
+        HashMap<String, Integer> categoryToIndex = this.degreePathSearch.getCategoryToInt();
         int[] categoriesValues = new int[numberOfDegreeRequirements];
         StringUtil stringUtil = new StringUtil();
         for(String degreeName: degreeNameSet){
@@ -125,55 +129,64 @@ public class DegreeController {
             }
         }
 
-        courseSearch.setStartState(categoriesValues); //set the start state
+        this.degreePathSearch.setStartState(categoriesValues); //set the start state
         int[] targetState = new int[categoriesValues.length]; 
-        courseSearch.setTargetState(targetState); //set the end goal (all zeros)
+        this.degreePathSearch.setTargetState(targetState); //set the end goal (all zeros)
         
-        List<List<int[]>> allCreComPath = courseSearch.computeShortestPath(); //This computes the big paths
-        List<List<int[]>> bestCreComPath = new ArrayList<List<int[]>>(); //The best path we computed
-        List<int[]> bestCreComList = new ArrayList<int[]>(); //The best moves to take in String
-        int i = allCreComPath.size()-1; //Set i as the final (When we reach end goal)
-        while(i>=0){// when i less than 0 means we get to the start state so stop
-            List<int[]> creComPath = allCreComPath.get(i);
-            int parentIndex = creComPath.get(1)[0]; //Get the parent index and trace it back
-            bestCreComPath.add(creComPath);
-            i=parentIndex;
-        }
-        
-        for(int index = bestCreComPath.size()-2;index>=0;index--){ //start from the second last (size-2) because we want to skip move of all zeroes
-            int[] parentMove = bestCreComPath.get(index).get(2);
-            bestCreComList.add(parentMove);
-        }
+        try{
+            List<List<int[]>>  allCreComPath = this.degreePathSearch.computeShortestPath().get(); //This computes the big paths
+            List<List<int[]>> bestCreComPath =new ArrayList<List<int[]>>(); //The best path we computed
+            List<int[]> bestCreComList = new ArrayList<int[]>(); //The best moves to take in String
+            int i = allCreComPath.size()-1; //Set i as the final (When we reach end goal)
+            while(i>=0){// when i less than 0 means we get to the start state so stop
+                List<int[]> creComPath = allCreComPath.get(i);
+                int parentIndex = creComPath.get(1)[0]; //Get the parent index and trace it back
+                bestCreComPath.add(creComPath);
+                i=parentIndex;
+            }
+            
+            for(int index = bestCreComPath.size()-2;index>=0;index--){ //start from the second last (size-2) because we want to skip move of all zeroes
+                int[] parentMove = bestCreComPath.get(index).get(2);
+                bestCreComList.add(parentMove);
+            }
 
-        int smallestSize = Integer.MAX_VALUE;
-        int smallestCredit = Integer.MAX_VALUE;
-        List<Course> finalBestCourseToTake = new ArrayList<Course>();
-        Set<List<int[]>> visitedCreComArrangements = new HashSet<List<int[]>>();
-        for(int repeat=5000;repeat>0;repeat--){
-            int bestTotalCredit = 0;
-            Collections.shuffle(bestCreComList);
-            if(visitedCreComArrangements.add(bestCreComList)){
-                List<Course> bestCourseToTake = courseSearch.computeBestCourseFromPath(bestCreComList);
-                
-                for(Course bestCourse: bestCourseToTake){
-                    bestTotalCredit+=bestCourse.credits;
-                }
+            int smallestSize = Integer.MAX_VALUE;
+            int smallestCredit = Integer.MAX_VALUE;
+            List<Course> finalBestCourseToTake = new ArrayList<Course>();
+            Set<List<int[]>> visitedCreComArrangements = new HashSet<List<int[]>>();
+            for(int repeat=3000;repeat>0;repeat--){
+                int bestTotalCredit = 0;
+                Collections.shuffle(bestCreComList);
+                if(visitedCreComArrangements.add(bestCreComList)){
+                    try{
+                        List<Course> bestCourseToTake = this.degreePathSearch.computeBestCourseFromPath(bestCreComList).get();
+                    
+                        for(Course bestCourse: bestCourseToTake){
+                            bestTotalCredit+=bestCourse.credits;
+                        }
 
-                if(smallestSize > bestCourseToTake.size() || smallestCredit > bestTotalCredit){
-                    smallestSize = bestCourseToTake.size();
-                    smallestCredit = bestTotalCredit;
-                    finalBestCourseToTake = bestCourseToTake;
-                    System.out.println("New smallest size/credit found: "+smallestSize+", "+smallestCredit);
+                        if(smallestSize > bestCourseToTake.size() || smallestCredit > bestTotalCredit){
+                            smallestSize = bestCourseToTake.size();
+                            smallestCredit = bestTotalCredit;
+                            finalBestCourseToTake = bestCourseToTake;
+                            System.out.println("New smallest size/credit found: "+smallestSize+", "+smallestCredit);
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+                    }
                 }
             }
+            List<String> bestCourseCodeToTake = new ArrayList<String>();
+            for(Course bestCourse: finalBestCourseToTake){
+                bestCourseCodeToTake.add(bestCourse.code+", credits: "+bestCourse.credits);
+            }
+            Collections.sort(bestCourseCodeToTake); //sort it in alphabetical order
+            return new ResponseEntity<List<String>>(bestCourseCodeToTake, HttpStatus.CREATED);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
-        List<String> bestCourseCodeToTake = new ArrayList<String>();
-        for(Course bestCourse: finalBestCourseToTake){
-            bestCourseCodeToTake.add(bestCourse.code+", credits: "+bestCourse.credits);
-        }
-        Collections.sort(bestCourseCodeToTake); //sort it in alphabetical order
-        return new ResponseEntity<List<String>>(bestCourseCodeToTake, HttpStatus.CREATED);
     }
 
     @PostMapping("/getSmallestCredit")
@@ -245,10 +258,8 @@ public class DegreeController {
         int[] targetState = new int[categoriesValues.length]; 
         courseSearch.setTargetState(targetState); //set the end goal (all zeros)
         
-        List<List<int[]>> finalBestCreComPath = new ArrayList<List<int[]>>(); //The best path we computed
-        int currLowestPathSize = Integer.MAX_VALUE;
-        for(int repeat = 1;repeat>0;repeat--){ //repeat 3 times because for some reason best path was not constant
-            List<List<int[]>> allCreComPath = courseSearch.computeShortestPath(); //This computes the big paths
+        try{
+            List<List<int[]>>  allCreComPath = this.degreePathSearch.computeShortestPath().get(); //This computes the big paths
             List<List<int[]>> bestCreComPath = new ArrayList<List<int[]>>(); //The best path we computed
             int i = allCreComPath.size()-1; //Set i as the final (When we reach end goal)
             while(i>=0){// when i less than 0 means we get to the start state so stop
@@ -257,38 +268,41 @@ public class DegreeController {
                 bestCreComPath.add(creComPath);
                 i=parentIndex;
             }
-            //compare and update lowest value
-            if(currLowestPathSize > bestCreComPath.size()){
-                currLowestPathSize = bestCreComPath.size();
-                finalBestCreComPath = bestCreComPath;
+
+            List<int[]> bestCreComList = new ArrayList<int[]>(); //The best moves to take in String
+            for(int index = bestCreComPath.size()-2;index>=0;index--){ //start from the second last (size-2) because we want to skip move of all zeroes
+                int[] parentMove = bestCreComPath.get(index).get(2);
+                bestCreComList.add(parentMove);
             }
-        }
 
-        List<int[]> bestCreComList = new ArrayList<int[]>(); //The best moves to take in String
-        for(int index = finalBestCreComPath.size()-2;index>=0;index--){ //start from the second last (size-2) because we want to skip move of all zeroes
-            int[] parentMove = finalBestCreComPath.get(index).get(2);
-            bestCreComList.add(parentMove);
-        }
+            int smallestCredit = Integer.MAX_VALUE;
+            Set<List<int[]>> visitedCreComArrangements = new HashSet<List<int[]>>();
+            for(int repeat=3000;repeat>0;repeat--){
+                int bestTotalCredit = 0;
+                Collections.shuffle(bestCreComList);
+                if(visitedCreComArrangements.add(bestCreComList)){
+                    try{
+                        List<Course> bestCourseToTake = this.degreePathSearch.computeBestCourseFromPath(bestCreComList).get();
+                    
+                        for(Course bestCourse: bestCourseToTake){
+                            bestTotalCredit+=bestCourse.credits;
+                        }
 
-        int smallestCredit = Integer.MAX_VALUE;
-        Set<List<int[]>> visitedCreComArrangements = new HashSet<List<int[]>>();
-        for(int repeat=3000;repeat>0;repeat--){
-            int bestTotalCredit = 0;
-            Collections.shuffle(bestCreComList);
-            if(visitedCreComArrangements.add(bestCreComList)){
-                List<Course> bestCourseToTake = courseSearch.computeBestCourseFromPath(bestCreComList);
-                
-                for(Course bestCourse: bestCourseToTake){
-                    bestTotalCredit+=bestCourse.credits;
-                }
-
-                if(smallestCredit > bestTotalCredit){
-                    smallestCredit = bestTotalCredit;
-                    System.out.println("New smallest credit found: "+smallestCredit);
+                        if(smallestCredit > bestTotalCredit){
+                            smallestCredit = bestTotalCredit;
+                            System.out.println("New smallest credit found: "+smallestCredit);
+                        }
+                    }catch(Exception e){
+                        e.printStackTrace();
+                        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+                    }
                 }
             }
+            
+            return new ResponseEntity<Integer>(smallestCredit, HttpStatus.CREATED);
+        }catch(Exception e){
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        
-        return new ResponseEntity<Integer>(smallestCredit, HttpStatus.CREATED);
     }
 }

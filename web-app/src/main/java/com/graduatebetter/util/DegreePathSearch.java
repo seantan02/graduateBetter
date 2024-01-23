@@ -9,6 +9,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Component;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,6 +21,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
+@Component
 public class DegreePathSearch {
     private HashSet<Course> courseList; //Assume every course in the list is unique
     private Set<Course> shortestCoursesPath;
@@ -247,7 +252,8 @@ public class DegreePathSearch {
      * 
      * @return
      */
-    public List<List<int[]>> computeShortestPath(){
+    @Async
+    public CompletableFuture<List<List<int[]>>> computeShortestPath(){
         List<List<int[]>> bestCreditComPath = new ArrayList<List<int[]>>();
         List<HashMap<String, List<Integer>>> possibleMoves = new ArrayList<HashMap<String, List<Integer>>>();
         List<HashMap<String, Integer>> possibleCount = new ArrayList<HashMap<String, Integer>>();
@@ -353,7 +359,7 @@ public class DegreePathSearch {
             }
             currentState = nextBestState;
         }
-        return bestCreditComPath;
+        return CompletableFuture.completedFuture(bestCreditComPath);
     }
 
     private HashMap<Integer, List<Course>> bestPrequisiteCourseCombo(Course _course, HashSet<String> visited, HashSet<String> disallowed, HashMap<String, Integer> moveLeft){
@@ -420,7 +426,8 @@ public class DegreePathSearch {
         return result;
     }
 
-    public List<Course> computeBestCourseFromPath(List<int[]> credComMove){
+    @Async
+    public CompletableFuture<List<Course>> computeBestCourseFromPath(List<int[]> credComMove){
         HashMap<String, List<Course>> creditCombinationToCourses = this.creditCombinationToCourses;
         List<Course> result = new ArrayList<Course>();
         HashSet<String> visited = new HashSet<String>();
@@ -482,7 +489,7 @@ public class DegreePathSearch {
                 }
             }
         }
-        return result;
+        return CompletableFuture.completedFuture(result);
     }
 
     private static HashMap<String, Integer> deepCopyHashMap(HashMap<String, Integer> original) {

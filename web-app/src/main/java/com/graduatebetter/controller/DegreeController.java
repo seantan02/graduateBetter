@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -96,6 +97,7 @@ public class DegreeController {
             System.err.println("Please provide atleast 2 unique degree ID to compute the shortest path.");
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+        this.degreePathSearch.reset(); //reset degreePathSearch object
         this.degreePathSearch.setNumberOfCategories(numberOfDegreeRequirements);
         this.degreePathSearch.setSetOfDegree(degreeNameSet);
 
@@ -144,17 +146,24 @@ public class DegreeController {
                 bestCreComPath.add(creComPath);
                 i=parentIndex;
             }
-            
+            int[] newas = new int[bestCreComPath.get(2).get(2).length];
             for(int index = bestCreComPath.size()-2;index>=0;index--){ //start from the second last (size-2) because we want to skip move of all zeroes
                 int[] parentMove = bestCreComPath.get(index).get(2);
+                System.out.println("Best move: :"+Arrays.toString(parentMove));
+                for(int asd=0;asd<parentMove.length;asd++){
+                    newas[asd] += parentMove[asd];
+                }
                 bestCreComList.add(parentMove);
             }
-
+            System.out.println("Size of best moves: "+bestCreComPath.size());
+            System.out.println("Start state: "+Arrays.toString(categoriesValues));
+            System.err.println("Final state: "+Arrays.toString(newas));
+            
             int smallestSize = Integer.MAX_VALUE;
             int smallestCredit = Integer.MAX_VALUE;
             List<Course> finalBestCourseToTake = new ArrayList<Course>();
             Set<List<int[]>> visitedCreComArrangements = new HashSet<List<int[]>>();
-            for(int repeat=3000;repeat>0;repeat--){
+            for(int repeat=5000;repeat>0;repeat--){
                 int bestTotalCredit = 0;
                 Collections.shuffle(bestCreComList);
                 if(visitedCreComArrangements.add(bestCreComList)){
@@ -222,15 +231,17 @@ public class DegreeController {
             System.err.println("Please provide atleast 2 unique degree ID to compute the shortest path.");
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-        DegreePathSearch courseSearch = new DegreePathSearch(numberOfDegreeRequirements, degreeNameSet);
+        this.degreePathSearch.reset(); //reset degreePathSearch object
+        this.degreePathSearch.setNumberOfCategories(numberOfDegreeRequirements);
+        this.degreePathSearch.setSetOfDegree(degreeNameSet);
 
         for(String degreeName: degreeNameSet){
             for(Course _course: degreeData.filterCourseByDegree(degreeName, 99999)){
-                courseSearch.addCourse(_course);
+                this.degreePathSearch.addCourse(_course);
             }
         }
 
-        HashMap<String, Integer> categoryToIndex = courseSearch.getCategoryToInt();
+        HashMap<String, Integer> categoryToIndex = this.degreePathSearch.getCategoryToInt();
         int[] categoriesValues = new int[numberOfDegreeRequirements];
         StringUtil stringUtil = new StringUtil();
         for(String degreeName: degreeNameSet){
@@ -254,13 +265,14 @@ public class DegreeController {
             }
         }
 
-        courseSearch.setStartState(categoriesValues); //set the start state
+        this.degreePathSearch.setStartState(categoriesValues); //set the start state
         int[] targetState = new int[categoriesValues.length]; 
-        courseSearch.setTargetState(targetState); //set the end goal (all zeros)
+        this.degreePathSearch.setTargetState(targetState); //set the end goal (all zeros)
         
         try{
             List<List<int[]>>  allCreComPath = this.degreePathSearch.computeShortestPath().get(); //This computes the big paths
-            List<List<int[]>> bestCreComPath = new ArrayList<List<int[]>>(); //The best path we computed
+            List<List<int[]>> bestCreComPath =new ArrayList<List<int[]>>(); //The best path we computed
+            List<int[]> bestCreComList = new ArrayList<int[]>(); //The best moves to take in String
             int i = allCreComPath.size()-1; //Set i as the final (When we reach end goal)
             while(i>=0){// when i less than 0 means we get to the start state so stop
                 List<int[]> creComPath = allCreComPath.get(i);
@@ -268,16 +280,22 @@ public class DegreeController {
                 bestCreComPath.add(creComPath);
                 i=parentIndex;
             }
-
-            List<int[]> bestCreComList = new ArrayList<int[]>(); //The best moves to take in String
+            int[] newas = new int[bestCreComPath.get(2).get(2).length];
             for(int index = bestCreComPath.size()-2;index>=0;index--){ //start from the second last (size-2) because we want to skip move of all zeroes
                 int[] parentMove = bestCreComPath.get(index).get(2);
+                System.out.println("Best move: :"+Arrays.toString(parentMove));
+                for(int asd=0;asd<parentMove.length;asd++){
+                    newas[asd] += parentMove[asd];
+                }
                 bestCreComList.add(parentMove);
             }
-
+            System.out.println("Size of best moves: "+bestCreComPath.size());
+            System.out.println("Start state: "+Arrays.toString(categoriesValues));
+            System.err.println("Final state: "+Arrays.toString(newas));
+            
             int smallestCredit = Integer.MAX_VALUE;
             Set<List<int[]>> visitedCreComArrangements = new HashSet<List<int[]>>();
-            for(int repeat=3000;repeat>0;repeat--){
+            for(int repeat=5000;repeat>0;repeat--){
                 int bestTotalCredit = 0;
                 Collections.shuffle(bestCreComList);
                 if(visitedCreComArrangements.add(bestCreComList)){

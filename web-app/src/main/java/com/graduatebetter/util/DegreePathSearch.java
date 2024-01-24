@@ -106,16 +106,20 @@ public class DegreePathSearch {
         if(_move.size() ==0 ) throw new IllegalStateException("Next state cannot be length of 0");
         if(_currentState.length ==0 ) throw new IllegalStateException("Please first set current goal array before computing cost");
         //compute by taking the current state[i] - move[i]
-        int gain = 0;
-        int spend = -999;
+        // int gain = 0;
+        int cost = 0;
+        // int spend = -999;
         for(int i=0;i<_move.size();i++){
-            int currentStateValue = _currentState[i];
+            // int currentStateValue = _currentState[i];
             int moveValue = _move.get(i);
-            if(spend==-999 && moveValue>0) spend = moveValue;
-            gain += (currentStateValue-(currentStateValue-moveValue)); 
+            cost = moveValue;
+            break;
+            // if(spend==-999 && moveValue>0) spend = moveValue;
+            // gain += (currentStateValue-(currentStateValue-moveValue)); 
         }
-        gain -= spend;
-        return (int) -((double) gain * scaler);
+        // gain -= spend;
+        // return (int) -((double) gain * scaler);
+        return (int) -((double) cost * scaler);
     }
 
     /**
@@ -131,7 +135,7 @@ public class DegreePathSearch {
             int[] stateCloned = Arrays.copyOf(state, state.length);
             int[] moveTaken = Arrays.copyOf(state, state.length);
             List<Integer> moveValueList = move.getValue();
-            int gCost = computeGCost(stateCloned, moveValueList, 1);
+            int gCost = computeGCost(stateCloned, moveValueList, 1.5);
             for(int i=0;i<moveValueList.size();i++){
                 int moveValue = 0;
                 try{
@@ -143,7 +147,7 @@ public class DegreePathSearch {
                 stateCloned[i] -= (moveValue <= stateCloned[i]) ? moveValue : stateCloned[i];
             }
             successor.add(stateCloned);
-            int hCost = computeHCost(stateCloned, 0.2);
+            int hCost = computeHCost(stateCloned, 0.5);
             int fCost = gCost+hCost;
             successor.add(new int[] {gCost, (int) hCost, fCost});
             successor.add(moveTaken);
@@ -286,54 +290,52 @@ public class DegreePathSearch {
             int[] nextBestStateDetails = nextBestMove.get(1);
             int nextBestStateParentIndex = nextBestStateDetails[0];
             int[] moveTaken = nextBestMove.get(2);
-
             //add to visited
-            if(!visited.contains(Arrays.toString(nextBestState))){
-                //keep track of credit combo count
-                if(!Arrays.equals(nextBestState, this.startState)){ //ignore if it is start
-                    HashMap<String, List<Integer>> newPossibleMoves = deepCopyHashMapList(possibleMoves.get(nextBestStateParentIndex));
-                    HashMap<String, Integer> newPossibleCount = deepCopyHashMap(possibleCount.get(nextBestStateParentIndex));
-                    int oldCount = newPossibleCount.get(Arrays.toString(moveTaken));
-                    if(oldCount == 1){
-                        newPossibleMoves.remove(Arrays.toString(moveTaken));
-                        newPossibleCount.remove(Arrays.toString(moveTaken));
-                    }else{
-                        newPossibleCount.replace(Arrays.toString(moveTaken), oldCount-1);
-                    }
-                    //now we have to take out the move for the disallowed course so we wont be able to take disallowed course
-                    List<Course> creComPathCourseList = this.creditCombinationToCourses.get(Arrays.toString(moveTaken));
-                    for(Course creComPathCourse: creComPathCourseList){
-                        if(creComPathCourse.getDisallowedCourses() != null && creComPathCourse.getDisallowedCourses().size() > 0){ //only continue if there's a disallowed list
-                            if(!visitedCourse.contains(creComPathCourse.getCode())){
-                                for(String disallowedCourseCode: creComPathCourse.getDisallowedCourses()){
-                                    Course disallowedCourse = this.codeToCourse.get(disallowedCourseCode);
-                                    List<Integer> disallowedMove = computeMoveFromCourse(disallowedCourse);
+            if(visited.contains(Arrays.toString(nextBestState))) continue;
+            //keep track of credit combo count
+            if(!Arrays.equals(nextBestState, this.startState)){ //ignore if it is start
+                HashMap<String, List<Integer>> newPossibleMoves = deepCopyHashMapList(possibleMoves.get(nextBestStateParentIndex));
+                HashMap<String, Integer> newPossibleCount = deepCopyHashMap(possibleCount.get(nextBestStateParentIndex));
+                int oldCount = newPossibleCount.get(Arrays.toString(moveTaken));
+                if(oldCount == 1){
+                    newPossibleMoves.remove(Arrays.toString(moveTaken));
+                    newPossibleCount.remove(Arrays.toString(moveTaken));
+                }else{
+                    newPossibleCount.replace(Arrays.toString(moveTaken), oldCount-1);
+                }
+                //now we have to take out the move for the disallowed course so we wont be able to take disallowed course
+                List<Course> creComPathCourseList = this.creditCombinationToCourses.get(Arrays.toString(moveTaken));
+                for(Course creComPathCourse: creComPathCourseList){
+                    if(creComPathCourse.getDisallowedCourses() != null && creComPathCourse.getDisallowedCourses().size() > 0){ //only continue if there's a disallowed list
+                        if(!visitedCourse.contains(creComPathCourse.getCode())){
+                            for(String disallowedCourseCode: creComPathCourse.getDisallowedCourses()){
+                                Course disallowedCourse = this.codeToCourse.get(disallowedCourseCode);
+                                List<Integer> disallowedMove = computeMoveFromCourse(disallowedCourse);
 
-                                    if(newPossibleCount.get(disallowedMove.toString()) != null){
-                                        int disallowedMoveOldCount = newPossibleCount.get(disallowedMove.toString());
-                                        if(disallowedMoveOldCount == 1){
-                                            newPossibleMoves.remove(disallowedMove.toString());
-                                            newPossibleCount.remove(disallowedMove.toString());
-                                        }else{
-                                            newPossibleCount.replace(disallowedMove.toString(), disallowedMoveOldCount-1);
-                                        }
-                                        visitedCourse.add(disallowedCourseCode);
+                                if(newPossibleCount.get(disallowedMove.toString()) != null){
+                                    int disallowedMoveOldCount = newPossibleCount.get(disallowedMove.toString());
+                                    if(disallowedMoveOldCount == 1){
+                                        newPossibleMoves.remove(disallowedMove.toString());
+                                        newPossibleCount.remove(disallowedMove.toString());
+                                    }else{
+                                        newPossibleCount.replace(disallowedMove.toString(), disallowedMoveOldCount-1);
                                     }
-                                    
+                                    visitedCourse.add(disallowedCourseCode);
                                 }
-                                visitedCourse.add(creComPathCourse.getCode());
+                                
                             }
+                            visitedCourse.add(creComPathCourse.getCode());
                         }
                     }
-
-                    possibleMoves.add(newPossibleMoves);
-                    possibleCount.add(newPossibleCount);
                 }
 
-                visited.add(Arrays.toString(nextBestState)); //add the next state after current operation
-                bestCreditComPath.add(nextBestMove); //add the state to our best credit path as a record OPTIONAL
-                parentIndex = bestCreditComPath.size()-1; //calculate parentIndex
+                possibleMoves.add(newPossibleMoves);
+                possibleCount.add(newPossibleCount);
             }
+
+            visited.add(Arrays.toString(nextBestState)); //add the next state after current operation
+            bestCreditComPath.add(nextBestMove); //add the state to our best credit path as a record OPTIONAL
+            parentIndex = bestCreditComPath.size()-1; //calculate parentIndex
 
             HashMap<String, List<Integer>> possibleMove = possibleMoves.get(parentIndex);
             List<List<int[]>> successors = getSuccessor(nextBestState, possibleMove);
@@ -342,6 +344,8 @@ public class DegreePathSearch {
                 successorDetail[0] = parentIndex;
                 System.arraycopy(successor.get(1), 0, successorDetail, 1, successor.get(1).length);
                 successor.set(1, successorDetail);
+                successor.get(1)[1] += nextBestStateDetails[1]; //add this gcost to successor gcost
+                successor.get(1)[3] += nextBestStateDetails[1]; //add this gcost to successor fcost
                 
                 if(visited.contains(Arrays.toString(successor.get(0)))){ //Skip if this successor is already visited
                     continue; //go to next loop without adding to our PQ
@@ -393,7 +397,11 @@ public class DegreePathSearch {
                     }
                     Course preReqCourse = this.codeToCourse.get(coursePreReqCode);
                     // if(preReqCourse == null) throw new IllegalStateException("Course: "+coursePreReqCode+" doesn't seems to exist.");
-                    if(preReqCourse == null) continue;
+                    if(preReqCourse == null){
+                        IllegalStateException exception = new IllegalStateException("Course: "+coursePreReqCode+" doesn't seems to exist.");
+                        exception.printStackTrace();
+                        continue;
+                    };
                     if(disallowed.contains(preReqCourse.code)) continue; //if it's not allowed then skip
                     List<Integer> preReqCourseMove = computeMoveFromCourse(preReqCourse);
                     if(moveLeft.containsKey(preReqCourseMove.toString())){
@@ -521,5 +529,30 @@ public class DegreePathSearch {
         }
 
         return copy;
+    }
+
+    public boolean reset(){
+        try{
+            this.numberOfCategories = 0;
+            this.setOfDegree = new HashSet<String>();
+            this.courseList = new HashSet<Course>();
+            this.shortestCoursesPath = new HashSet<Course>();
+            this.codeToCourse = new HashMap<String, Course>();
+            this.courseToRequisite = new HashMap<String, List<String>>();
+            this.requisiteToCourse = new HashMap<String, Set<String>>();
+            this.creditCombination = new HashMap<String, List<Integer>>();
+            this.creditCombinationList = new ArrayList<List<Integer>>();
+            this.creditCombinationCount = new HashMap<String, Integer>();
+            this.creditCombinationToCourses = new HashMap<String, List<Course>>();
+            this.intToCategory = new HashMap<Integer, String>();
+            this.categoryToInt = new HashMap<String, Integer>();
+            this.categoryId = 0;
+            this.startState = null;
+            this.targetState = null;
+            return true;
+        }catch(Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 }

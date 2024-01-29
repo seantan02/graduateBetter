@@ -105,11 +105,11 @@ public class DegreeData {
                 for(DegreeReqEntity degreeReq: courseEntity.getDegreeReqEntity()){
                     if(degreeReq.getDegreeEntity().getName().equals(degree)){
                         if(course.majorSatisfiedCategories.containsKey(degree)){//if map already has the key
-                            HashSet<String> oldSet = course.majorSatisfiedCategories.get(degree);
+                            Set<String> oldSet = course.majorSatisfiedCategories.get(degree);
                             oldSet.add(degreeReq.getName());
                             course.majorSatisfiedCategories.replace(degree, oldSet);
                         }else{//if map doesn't have the key then we create a new one
-                            HashSet<String> newSet = new HashSet<String>();
+                            Set<String> newSet = new HashSet<String>();
                             newSet.add(degreeReq.getName());
                             course.majorSatisfiedCategories.put(degree, newSet);
                         }

@@ -66,11 +66,11 @@ public class DegreePathSearch {
         }
 
         if(_course.majorSatisfiedCategories != null){
-            for(HashMap.Entry<String, HashSet<String>> entry: _course.majorSatisfiedCategories.entrySet()){
+            for(HashMap.Entry<String, Set<String>> entry: _course.majorSatisfiedCategories.entrySet()){
                 String key = entry.getKey();
                 if(!this.setOfDegree.contains(key)) continue; //prevent a course with other degree we dont care to mess up our array
                 key = key.replaceAll("\\s", "");
-                HashSet<String> value = entry.getValue();
+                Set<String> value = entry.getValue();
                 for(String category : value){
                     result.set(this.categoryToInt.get(key+category), _course.credits);
                 }
@@ -186,11 +186,11 @@ public class DegreePathSearch {
             count++;
         }
         StringUtil stringUtil = new StringUtil();
-        for(HashMap.Entry<String, HashSet<String>> satisfiedCategories: _course.majorSatisfiedCategories.entrySet()){
+        for(HashMap.Entry<String, Set<String>> satisfiedCategories: _course.majorSatisfiedCategories.entrySet()){
             String satisfiedCategoriesMajor = satisfiedCategories.getKey();
             satisfiedCategoriesMajor = satisfiedCategoriesMajor.strip();
             satisfiedCategoriesMajor = satisfiedCategoriesMajor.toUpperCase();
-            HashSet<String> satisfiedCategoriesSet = satisfiedCategories.getValue();
+            Set<String> satisfiedCategoriesSet = satisfiedCategories.getValue();
             if(!this.setOfDegree.contains(satisfiedCategoriesMajor)){
                 continue;
             }else{

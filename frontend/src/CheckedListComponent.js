@@ -6,53 +6,54 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import './style/styles.css';
+import '@fontsource/roboto'; // Import the Roboto font
 
 
-const MajorComponent = ({availableMajors, onCheckedItemsChange}) => {
-  const [checkedMajors, setCheckedMajors] = useState([]);
-  const [filteredMajors, setFilteredMajors] = useState([]);
+const CheckedListComponent = ({title, availableItems, onCheckedItemsChange}) => {
+  const [checkedItems, setCheckedItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
-  const sortedAvailableMajors = [...availableMajors].sort((a,b) =>a.localeCompare(b));
+  const sortedAvailableMajors = [...availableItems].sort((a,b) =>a.localeCompare(b));
  // Handle checkbox change
   const handleCheckboxChange = majorName => {
-    if (checkedMajors.includes(majorName)) {
-      setCheckedMajors([...checkedMajors.filter(item=>item!==majorName)]);
+    if (checkedItems.includes(majorName)) {
+      setCheckedItems([...checkedItems.filter(item=>item!==majorName)]);
     } else {
-      setCheckedMajors([...checkedMajors, majorName].sort((a,b) => a.localeCompare(b)));
+      setCheckedItems([...checkedItems, majorName].sort((a,b) => a.localeCompare(b)));
     }
   };
+  const searchString = "Search for " + title;
 
   useEffect(() => {
-    setFilteredMajors([...availableMajors].sort((a,b) => a.localeCompare(b)));
-  },[availableMajors])
+    setFilteredItems([...availableItems].sort((a,b) => a.localeCompare(b)));
+  },[availableItems])
 
   const handleClearClick = () =>{
     setSearchTerm('');
-    setFilteredMajors([...availableMajors].sort((a,b) => a.localeCompare(b)));
+    setFilteredItems([...availableItems].sort((a,b) => a.localeCompare(b)));
   }
 
   const handleSearchTermChange = (updatedSearchTerm) => {
     setSearchTerm(updatedSearchTerm);
     console.log(searchTerm, updatedSearchTerm);
-    setFilteredMajors(sortedAvailableMajors.filter(item => item.toLowerCase().includes(updatedSearchTerm.toLowerCase())));
+    setFilteredItems(sortedAvailableMajors.filter(item => item.toLowerCase().includes(updatedSearchTerm.toLowerCase())));
   }
 
   useEffect(() => {
-    onCheckedItemsChange(checkedMajors);
-  },[checkedMajors, onCheckedItemsChange])
+    onCheckedItemsChange(checkedItems);
+  },[checkedItems, onCheckedItemsChange])
 
   return(
-    <div  id="MajorComponent">
     <div className="col800px">
-      <h2>Checked Majors</h2>
+      <h3 className="noMargin">Checked {title}</h3>
       <div className="checkboxContainer">
-        {checkedMajors.map(item => (
+        {checkedItems.length !== 0 && checkedItems.map(item => (
         <Box key={item}>
           <FormControlLabel
             control={
               <Checkbox
-                checked={checkedMajors.includes(item)}
+                checked={checkedItems.includes(item)}
                 onChange={() => handleCheckboxChange(item)}
               />
             }
@@ -60,12 +61,25 @@ const MajorComponent = ({availableMajors, onCheckedItemsChange}) => {
           />
         </Box>
         ))}
+        {
+          checkedItems.length===0 && 
+        <Box key="None">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={true}
+                onChange={() => {}}
+              />
+            }
+            label="None"
+          />
+        </Box>
+        }
       </div>
       {/* SEARCH BAR*/}
-      <h2>All Majors</h2>
       <div className="searchContainer">
         <TextField
-          label="Search for majors"
+          label={searchString}
           variant="outlined"
           fullWidth
           value={searchTerm}
@@ -78,12 +92,12 @@ const MajorComponent = ({availableMajors, onCheckedItemsChange}) => {
       </div>
       <div className="checkboxContainer">
       {/* Checkboxes */}
-      {filteredMajors.map(item => (
+      {filteredItems.map(item => (
         <Box key={item}>
           <FormControlLabel
             control={
               <Checkbox
-                checked={checkedMajors.includes(item)}
+                checked={checkedItems.includes(item)}
                 onChange={() => handleCheckboxChange(item)}
               />
             }
@@ -93,8 +107,7 @@ const MajorComponent = ({availableMajors, onCheckedItemsChange}) => {
       ))}
       </div>
     </div>
-    </div>
   )
 }
 
-export default MajorComponent;
+export default CheckedListComponent;

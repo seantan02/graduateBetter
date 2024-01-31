@@ -1,17 +1,14 @@
 .paddedDiv {
   padding: 10px;
-  margin-bottom: 10px;
 }
 .checkboxContainer {
   padding: 10px;
-  margin-bottom: 10px;
   display: flex;
   flex-wrap: wrap; /* Allow checkboxes to wrap to the next line if needed */
 }
 
 .searchContainer {
   padding: 10px;
-  margin-bottom: 10px;
   display: flex;
   align-items: center;
 }
@@ -20,12 +17,26 @@
   margin-left: 8px; /* Adjust margin between search bar and clear button */
 }
 
-#MajorComponent{
-  background-color: rgb(211,211,211)
+.bg1{
+  background-color: #ECFFFF;
+}
+.bg2{
+  background-color: #FFFFF0;
 }
 .col800px {
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
   padding: 16px;
+}
+.containerCheckBoxHeight{
+  height: 42px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.noMargin{
+  margin: 0px;
+}
+.headerPadding{
+  padding: 30px;
 }

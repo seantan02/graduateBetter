@@ -1,0 +1,31 @@
+.paddedDiv {
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.checkboxContainer {
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-wrap: wrap; /* Allow checkboxes to wrap to the next line if needed */
+}
+
+.searchContainer {
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.clearButton {
+  margin-left: 8px; /* Adjust margin between search bar and clear button */
+}
+
+#MajorComponent{
+  background-color: rgb(211,211,211)
+}
+.col800px {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 16px;
+}

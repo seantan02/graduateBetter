@@ -23,6 +23,7 @@ public class DegreePathSearchTest {
         course1.setTitle("Title B");
         this.sampleListOfCourse.add(course1);
         this.sampleListOfCourse.add(course2);
+        ///asdasdasds
     }
 
     @Test 

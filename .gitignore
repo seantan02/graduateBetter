@@ -19,3 +19,13 @@ web-app/src/main/resources/*
 !web-app/src/main/resources/static
 !web-app/src/main/resources/templates
 !web-app/src/main/resources/main-banner.txt
+<<<<<<< Updated upstream
+=======
+web-app/src/test/java/com/graduatebetter/*
+!web-app/src/test/java/com/graduatebetter/util
+web-app/src/test/resources/*
+!web-app/src/test/resources/static
+!web-app/src/test/resources/templates
+!web-app/src/test/resources/main-banner.txt
+web-scrapper
+>>>>>>> Stashed changes

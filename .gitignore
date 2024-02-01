@@ -1,6 +1,7 @@
 algorithm_test
 data
 demo
+frontend/.node_modules
 web-app/Makefile
 web-app/docker-compose.yml
 web-app/.mvn

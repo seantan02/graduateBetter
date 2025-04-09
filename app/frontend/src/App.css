@@ -1,0 +1,23 @@
+.app {
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+.selected-items {
+  min-height: 46px;
+  background-color: #fff;
+}
+
+.suggestions {
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.suggestion:hover {
+  background-color: #f8f9fa;
+}
+
+.z-10 {
+  z-index: 10;
+}

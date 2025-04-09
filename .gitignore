@@ -1,29 +1,56 @@
-algorithm_test
-data
-demo
-frontend/.node_modules
-web-app/Makefile
-web-app/docker-compose.yml
-web-app/.mvn
-web-app/.vscode
-web-app/postgres-data
-web-app/target
-web-app/src/main/java/com/graduatebetter/*
-!web-app/src/main/java/com/graduatebetter/controller
-!web-app/src/main/java/com/graduatebetter/dto
-!web-app/src/main/java/com/graduatebetter/enum
-!web-app/src/main/java/com/graduatebetter/model
-!web-app/src/main/java/com/graduatebetter/repository
-!web-app/src/main/java/com/graduatebetter/service
-!web-app/src/main/java/com/graduatebetter/util
-web-app/src/main/resources/*
-!web-app/src/main/resources/static
-!web-app/src/main/resources/templates
-!web-app/src/main/resources/main-banner.txt
-web-app/src/test/java/com/graduatebetter/*
-!web-app/src/test/java/com/graduatebetter/util
-web-app/src/test/resources/*
-!web-app/src/test/resources/static
-!web-app/src/test/resources/templates
-!web-app/src/test/resources/main-banner.txt
-web-scrapper
+# For all
+venv
+.env
+.env.*
+env_files
+__pycache__
+*.log
+logs
+.DS_Store
+*.DS_Store
+*.cache
+*.sln
+
+# Web scrapper
+web-scrapper/data
+
+# App
+#Frontend
+app/web-app/target
+app/data
+app/logs
+# images
+app/frontend/src/assets/images
+# dependencies
+app/frontend/node_modules
+app/frontend/package-lock.json
+app/frontend/.pnp
+app/frontend.pnp.js
+app/frontend/.vscode/*
+app/frontend/!.vscode/extensions.json
+app/frontend/.idea
+app/frontend/.DS_Store
+app/frontend/*.suo
+app/frontend/*.ntvs*
+app/frontend/*.njsproj
+app/frontend/*.sln
+app/frontend/*.sw?
+app/frontend/dist
+app/frontend/dist-ssr
+app/frontend/*.local
+# testing
+app/frontend/coverage
+# production
+app/frontend/build
+# misc
+app/frontend/.DS_Store
+# BACKEND
+app/backend/bin
+app/backend/obj
+
+# data pipeline
+data_pipeline/data
+
+# db_snapshots
+db_snapshots/*
+!db_snapshots/ss.sql

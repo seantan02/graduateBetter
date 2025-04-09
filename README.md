@@ -1,15 +1,29 @@
 # Graduate Better
 
 **ALERT. ATTENTION!**
-This is the first working beta version and this repository doesn't contain all components for you to download and copy and run it locally. For example, all the dataset for courses are not included. This is to protect the hardwork and dedication of our team especially the founder Sean Tan Siong Ann. This beta version will soon be run on AWS Docker and be available at some domain, please patiently wait for 1-2 weeks from now on, 01/19/2024. Thank you!
+This is a public available sample version of the private graduate better repo. This repo does not include the Airflow data pipeline and the web scrapper to prevent unauthorized commercial use.
 
 ## Overview
 
 Graduate Better aims to help UW-Madison, and eventually all university, students to plan courses and maximize the gains in the shortest amount of time in college.
 
+- How does it work?
+1. Student picks their intended majors
+2. Student enter their completed courses and their intended courses, if any
+3. The client application sends an API request to the ASP CORE .NET API system
+4. The backend perform a highly modified A* Search algorithm to compute the results
+5. Student sees the result
+
+## Tech Stack
+- C# .NET ASP CORE for backend
+- React with VITE + TypeScript for frontend
+- Python for web scrapper and Airflow data pipeline
+- Docker for deployment
+- Google Cloud compute engines for Virtual Machine hosting
+
 ## Author
 
-- Tan Siong Ann
+- Sean Tan (Founder), Legal name: Tan Siong Ann
 
 ## Partner & Contributor
 
@@ -26,7 +40,7 @@ Highlight key features of your application.
 ## License and Rights
 All rights reserved.
 
-© 2023-2025 Tan Siong Ann
+© 2025-2028 Tan Siong Ann
 
 This software is the property of Tan Siong Ann and is protected by copyright law and international treaties. Unauthorized reproduction or distribution of this software, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under the law.
 

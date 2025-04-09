@@ -1,0 +1,1472 @@
+{
+    "majors": {
+        "Accounting": {
+            "title": "Accounting",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/business/accounting-information-systems/accounting-certificate/"
+            }
+        },
+        "AccountingFundamentals": {
+            "title": "Accounting Fundamentals",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/business/accounting-information-systems/accounting-fundamentals-certificate/"
+            }
+        },
+        "AfricanAmericanStudies": {
+            "title": "African American Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/african-american-studies/african-american-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/african-american-studies/african-american-studies-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/african-american-studies/african-american-studies-certificate/"
+            }
+        },
+        "AfricanCulturalStudies": {
+            "title": "African Cultural Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/african-cultural-studies/african-cultural-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/african-cultural-studies/african-cultural-studies-bs/"
+            }
+        },
+        "AfricanStudies": {
+            "title": "African Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/african-studies-certificate/"
+            }
+        },
+        "AgriculturalBusinessManagement": {
+            "title": "Agricultural Business Management",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/agricultural-applied-economics/agricultural-business-management-bs/"
+            }
+        },
+        "AgriculturalandAppliedEconomics": {
+            "title": "Agricultural and Applied Economics",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/agricultural-applied-economics/agricultural-applied-economics-bs/"
+            }
+        },
+        "Agroecology": {
+            "title": "Agroecology",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/plant-agroecosystem-sciences/agroecology-bs/"
+            }
+        },
+        "Agronomy": {
+            "title": "Agronomy",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/plant-agroecosystem-sciences/agronomy-bs/"
+            }
+        },
+        "AmericanIndianandIndigenousStudies": {
+            "title": "American Indian and Indigenous Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/american-indian-indigenous-studies/american-indian-indigenous-studies-certificate/"
+            }
+        },
+        "AnimalandVeterinaryBiosciences": {
+            "title": "Animal and Veterinary Biosciences",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/animal-dairy-sciences/animal-veterinary-biosciences-bs/"
+            }
+        },
+        "Anthropology": {
+            "title": "Anthropology",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/anthropology/anthropology-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/anthropology/anthropology-bs/"
+            }
+        },
+        "AppliedMathematicsEngineeringandPhysics": {
+            "title": "Applied Mathematics, Engineering, and Physics",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/mathematics/applied-mathematics-engineering-physics-bs-amep/"
+            }
+        },
+        "ArabicLanguageandCulture": {
+            "title": "Arabic Language and Culture",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/african-cultural-studies/arabic-language-culture-certificate/"
+            }
+        },
+        "Archaeology": {
+            "title": "Archaeology",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/anthropology/archaeology-certificate/"
+            }
+        },
+        "Architecture": {
+            "title": "Architecture",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/engineering/civil-environmental-engineering/architecture-certificate/"
+            }
+        },
+        "Art": {
+            "title": "Art",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/education/art/art-bs/",
+                "BFA": "https://guide.wisc.edu/undergraduate/education/art/art-bfa/"
+            }
+        },
+        "ArtEducation": {
+            "title": "Art Education",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/education/art/art-education-bs/"
+            }
+        },
+        "ArtHistory": {
+            "title": "Art History",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/art-history/art-history-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/art-history/art-history-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/art-history/art-history-certificate/"
+            }
+        },
+        "ArtStudio": {
+            "title": "Art Studio",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/art/art-studio-certificate/"
+            }
+        },
+        "ArtsandTeaching": {
+            "title": "Arts and Teaching",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/curriculum-instruction/arts-teaching-certificate/"
+            }
+        },
+        "AsianAmericanStudies": {
+            "title": "Asian American Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/asian-american-studies/asian-american-studies-certificate/"
+            }
+        },
+        "AsianLanguagesandCultures": {
+            "title": "Asian Languages and Cultures",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/asian-languages-cultures/asian-languages-cultures-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/asian-languages-cultures/asian-languages-cultures-bs/"
+            }
+        },
+        "AstronomyPhysics": {
+            "title": "Astronomy\u2013Physics",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/astronomy/astronomy-physics-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/astronomy/astronomy-physics-bs/"
+            }
+        },
+        "AthleticHealthcare": {
+            "title": "Athletic Healthcare",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/kinesiology/athletic-healthcare-certificate/"
+            }
+        },
+        "AtmosphericandOceanicSciences": {
+            "title": "Atmospheric and Oceanic Sciences",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/atmospheric-oceanic-sciences/atmospheric-oceanic-sciences-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/atmospheric-oceanic-sciences/atmospheric-oceanic-sciences-bs/"
+            }
+        },
+        "BiochemistryCALS": {
+            "title": "Biochemistry (CALS)",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/biochemistry/biochemistry-bs/"
+            }
+        },
+        "BiochemistryLS": {
+            "title": "Biochemistry (L&S)",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/college-wide/biochemistry-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/college-wide/biochemistry-bs/"
+            }
+        },
+        "BiologicalSystemsEngineering": {
+            "title": "Biological Systems Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/biological-systems-engineering/biological-systems-engineering-bs/"
+            }
+        },
+        "BiologyCALS": {
+            "title": "Biology (CALS)",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/bacteriology/biology-bs/"
+            }
+        },
+        "BiologyLS": {
+            "title": "Biology (L&S)",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/integrative-biology/biology-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/integrative-biology/biology-bs/"
+            }
+        },
+        "BiologyCoreCurriculumHonors": {
+            "title": "Biology Core Curriculum Honors",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/biology-core-curriculum/biology-core-curriculum-honors-certificate/"
+            }
+        },
+        "BiologyinEngineeringforEngineeringMajors": {
+            "title": "Biology in Engineering for Engineering Majors",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/engineering/biomedical-engineering/biology-engineering-engineering-majors-certificate/"
+            }
+        },
+        "BiomedicalEngineering": {
+            "title": "Biomedical Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/biomedical-engineering/biomedical-engineering-bs/"
+            }
+        },
+        "Botany": {
+            "title": "Botany",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/botany/botany-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/botany/botany-bs/"
+            }
+        },
+        "Business": {
+            "title": "Business",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/business/school-wide/business-certificate/"
+            }
+        },
+        "BusinessAdministrationHumanResources": {
+            "title": "Business Administration-Human Resources",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/management-human-resources/business-administration-human-resources-bba/"
+            }
+        },
+        "BusinessAdministrationManagement": {
+            "title": "Business Administration-Management",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/management-human-resources/business-administration-management-bba/"
+            }
+        },
+        "BusinessAdministrationMarketing": {
+            "title": "Business Administration-Marketing",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/marketing/business-administration-marketing-bba/"
+            }
+        },
+        "BusinessManagementforAgriculturalandLifeSciences": {
+            "title": "Business Management for Agricultural and Life Sciences",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/agricultural-applied-economics/business-management-agricultural-life-sciences-certificate/"
+            }
+        },
+        "BusinessAccounting": {
+            "title": "Business: Accounting",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/accounting-information-systems/business-accounting-bba/"
+            }
+        },
+        "BusinessActuarialScience": {
+            "title": "Business: Actuarial Science",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/risk-insurance/business-actuarial-science-bba/"
+            }
+        },
+        "BusinessEntrepreneurship": {
+            "title": "Business: Entrepreneurship",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/management-human-resources/business-entrepreneurship-bba/"
+            }
+        },
+        "BusinessFinanceInvestmentandBanking": {
+            "title": "Business: Finance, Investment, and Banking",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/finance/business-finance-investment-banking-bba/"
+            }
+        },
+        "BusinessHumanResourceManagement": {
+            "title": "Business: Human Resource Management",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/management-human-resources/business-human-resource-management-bba/"
+            }
+        },
+        "BusinessInformationSystems": {
+            "title": "Business: Information Systems",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/operations-information-management/business-information-systems-bba/"
+            }
+        },
+        "BusinessInternationalBusiness": {
+            "title": "Business: International Business",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/international-business/business-international-business-bba/"
+            }
+        },
+        "BusinessManagement": {
+            "title": "Business: Management",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/management-human-resources/business-management-bba/"
+            }
+        },
+        "BusinessManagementandHumanResources": {
+            "title": "Business: Management and Human Resources",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/management-human-resources/business-management-human-resources-bba/"
+            }
+        },
+        "BusinessMarketing": {
+            "title": "Business: Marketing",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/marketing/business-marketing-bba/"
+            }
+        },
+        "BusinessOperationsandTechnologyManagement": {
+            "title": "Business: Operations and Technology Management",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/operations-information-management/business-operations-technology-management-bba/"
+            }
+        },
+        "BusinessRealEstateandUrbanLandEconomics": {
+            "title": "Business: Real Estate and Urban Land Economics",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/real-estate-urban-land-economics/business-real-estate-urban-land-economics-bba/"
+            }
+        },
+        "BusinessRiskManagementandInsurance": {
+            "title": "Business: Risk Management and Insurance",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/risk-insurance/business-risk-management-insurance-bba/"
+            }
+        },
+        "BusinessSupplyChainManagement": {
+            "title": "Business: Supply Chain Management",
+            "type": {
+                "BBA": "https://guide.wisc.edu/undergraduate/business/operations-information-management/business-supply-chain-management-bba/"
+            }
+        },
+        "CartographyandGeographicInformationSystems": {
+            "title": "Cartography and Geographic Information Systems",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/geography/cartography-geographic-information-systems-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/geography/cartography-geographic-information-systems-bs/"
+            }
+        },
+        "ChemicalEngineering": {
+            "title": "Chemical Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/chemical-biological-engineering/chemical-engineering-bs/"
+            }
+        },
+        "Chemistry": {
+            "title": "Chemistry",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/chemistry/chemistry-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/chemistry/chemistry-bs/"
+            }
+        },
+        "ChicanaoandLatinaoStudies": {
+            "title": "Chicana/o and Latina/o Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/chicana-chicano-latina-latino-studies/chicana-chicano-latina-latino-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/chicana-chicano-latina-latino-studies/chicana-chicano-latina-latino-studies-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/chicana-chicano-latina-latino-studies/chicana-chicano-latina-latino-studies-certificate/"
+            }
+        },
+        "Chinese": {
+            "title": "Chinese",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/asian-languages-cultures/chinese-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/asian-languages-cultures/chinese-bs/"
+            }
+        },
+        "ChineseProfessionalCommunication": {
+            "title": "Chinese Professional Communication",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/asian-languages-cultures/chinese-professional-communication-certificate/"
+            }
+        },
+        "CivilEngineering": {
+            "title": "Civil Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/civil-environmental-engineering/civil-engineering-bs/"
+            }
+        },
+        "ClassicalHumanities": {
+            "title": "Classical Humanities",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/classics-ancient-near-eastern-studies/classical-humanities-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/classics-ancient-near-eastern-studies/classical-humanities-bs/"
+            }
+        },
+        "ClassicalStudies": {
+            "title": "Classical Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/classics-ancient-near-eastern-studies/classical-studies-certificate/"
+            }
+        },
+        "CommunicationArts": {
+            "title": "Communication Arts",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/communication-arts/communication-arts-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/communication-arts/communication-arts-bs/"
+            }
+        },
+        "CommunicationSciencesandDisorders": {
+            "title": "Communication Sciences and Disorders",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/communication-sciences-disorders/communication-sciences-disorders-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/communication-sciences-disorders/communication-sciences-disorders-bs/",
+                "BSE": "https://guide.wisc.edu/undergraduate/education/curriculum-instruction/communication-sciences-disorders-bse/"
+            }
+        },
+        "CommunityandEnvironmentalSociology": {
+            "title": "Community and Environmental Sociology",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/community-environmental-sociology/community-environmental-sociology-bs/"
+            }
+        },
+        "CommunityandOrganizationalDevelopment": {
+            "title": "Community and Organizational Development",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/civil-society-community-studies/community-organizational-development-bs/"
+            }
+        },
+        "ComputerEngineering": {
+            "title": "Computer Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/electrical-computer-engineering/computer-engineering-bs/"
+            }
+        },
+        "ComputerSciences": {
+            "title": "Computer Sciences",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/computer-sciences/computer-sciences-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/computer-sciences/computer-sciences-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/computer-sciences/computer-sciences-certificate/"
+            }
+        },
+        "ConservationBiology": {
+            "title": "Conservation Biology",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/botany/conservation-biology-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/botany/conservation-biology-bs/"
+            }
+        },
+        "Consulting": {
+            "title": "Consulting",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/business/school-wide/consulting-certificate/"
+            }
+        },
+        "ConsumerBehaviorandMarketplaceStudies": {
+            "title": "Consumer Behavior and Marketplace Studies",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/consumer-science/consumer-behavior-marketplace-studies-bs/"
+            }
+        },
+        "ConsumerFinanceandFinancialPlanning": {
+            "title": "Consumer Finance and Financial Planning",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/consumer-science/consumer-finance-financial-planning-bs/"
+            }
+        },
+        "ConsumerMarketplaceStudies": {
+            "title": "Consumer Marketplace Studies",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/consumer-science/consumer-marketplace-studies-bs/"
+            }
+        },
+        "CriminalJustice": {
+            "title": "Criminal Justice",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/center-law-society-justice/criminal-justice-certificate/"
+            }
+        },
+        "DairyScience": {
+            "title": "Dairy Science",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/animal-dairy-sciences/dairy-science-bs/"
+            }
+        },
+        "DairyandFoodAnimalManagement": {
+            "title": "Dairy and Food Animal Management",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/animal-dairy-sciences/dairy-food-animal-management-bs/"
+            }
+        },
+        "Dance": {
+            "title": "Dance",
+            "type": {
+                "BFA": "https://guide.wisc.edu/undergraduate/education/dance/dance-bfa/",
+                "BS": "https://guide.wisc.edu/undergraduate/education/dance/dance-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/dance/dance-certificate/"
+            }
+        },
+        "DanceEducation": {
+            "title": "Dance Education",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/dance/dance-education-certificate/"
+            }
+        },
+        "DanceStudies": {
+            "title": "Dance Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/dance/dance-studies-certificate/"
+            }
+        },
+        "DataScience": {
+            "title": "Data Science",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/statistics/data-science-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/statistics/data-science-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/statistics/data-science-certificate/"
+            }
+        },
+        "DesignStrategy": {
+            "title": "Design Strategy",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/human-ecology/design-studies/design-strategy-certificate/"
+            }
+        },
+        "DesignInnovationandSociety": {
+            "title": "Design, Innovation, and Society",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/design-studies/design-innovation-society-bs/"
+            }
+        },
+        "DevelopmentEconomics": {
+            "title": "Development Economics",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/agricultural-applied-economics/development-economics-certificate/"
+            }
+        },
+        "DigitalCinemaProduction": {
+            "title": "Digital Cinema Production",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/communication-arts/digital-cinema-production-certificate/"
+            }
+        },
+        "DigitalMediaAnalytics": {
+            "title": "Digital Media Analytics",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/journalism-mass-communication/digital-media-analytics-certificate/"
+            }
+        },
+        "DigitalStudies": {
+            "title": "Digital Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/communication-arts/digital-studies-certificate/"
+            }
+        },
+        "DisabilityRightsandServices": {
+            "title": "Disability Rights and Services",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/rehabilitation-psychology-special-education/disability-rights-services-certificate/"
+            }
+        },
+        "EastAsianStudies": {
+            "title": "East Asian Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/east-asian-studies-certificate/"
+            }
+        },
+        "EastCentralEuropeanLanguagesLiteraturesandCultures": {
+            "title": "East Central European Languages, Literatures, and Cultures",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/east-central-european-languages-literatures-cultures-certificate/"
+            }
+        },
+        "EconomicAnalytics": {
+            "title": "Economic Analytics",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/economics/economic-analytics-certificate/"
+            }
+        },
+        "Economics": {
+            "title": "Economics",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/economics/economics-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/economics/economics-bs/"
+            }
+        },
+        "EducationStudies": {
+            "title": "Education Studies",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/education/educational-policy-studies/education-studies-bs/"
+            }
+        },
+        "EducationandEducationalServices": {
+            "title": "Education and Educational Services",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/educational-psychology/education-educational-services-certificate/"
+            }
+        },
+        "EducationalPolicyStudies": {
+            "title": "Educational Policy Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/educational-policy-studies/educational-policy-studies-certificate/"
+            }
+        },
+        "ElectricalEngineering": {
+            "title": "Electrical Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/electrical-computer-engineering/electrical-engineering-bs/"
+            }
+        },
+        "ElementaryEducation": {
+            "title": "Elementary Education",
+            "type": {
+                "BSE": "https://guide.wisc.edu/undergraduate/education/curriculum-instruction/elementary-education-bse/"
+            }
+        },
+        "ElementaryEducationandSpecialEducation": {
+            "title": "Elementary Education and Special Education",
+            "type": {
+                "BSE": "https://guide.wisc.edu/undergraduate/education/rehabilitation-psychology-special-education/elementary-education-special-education-bse/"
+            }
+        },
+        "EngineeringDataAnalytics": {
+            "title": "Engineering Data Analytics",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/engineering/industrial-systems-engineering/engineering-data-analytics-certificate/"
+            }
+        },
+        "EngineeringMechanics": {
+            "title": "Engineering Mechanics",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/mechanical-engineering/engineering-mechanics-bs/"
+            }
+        },
+        "EngineeringPhysics": {
+            "title": "Engineering Physics",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/nuclear-engineering-engineering-physics/engineering-physics-bs/"
+            }
+        },
+        "EngineeringThermalEnergySystems": {
+            "title": "Engineering Thermal Energy Systems",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/engineering/mechanical-engineering/engineering-thermal-energy-systems-certificate/"
+            }
+        },
+        "EngineeringforEnergySustainability": {
+            "title": "Engineering for Energy Sustainability",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/engineering/nuclear-engineering-engineering-physics/engineering-energy-sustainability-certificate/"
+            }
+        },
+        "English": {
+            "title": "English",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/english/english-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/english/english-bs/"
+            }
+        },
+        "Entomology": {
+            "title": "Entomology",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/entomology/entomology-bs/"
+            }
+        },
+        "Entrepreneurship": {
+            "title": "Entrepreneurship",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/business/management-human-resources/entrepreneurship-certificate/"
+            }
+        },
+        "EnvironmentalEngineering": {
+            "title": "Environmental Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/civil-environmental-engineering/environmental-engineering-bs/"
+            }
+        },
+        "EnvironmentalSciencesCALS": {
+            "title": "Environmental Sciences (CALS)",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/soil-environmental-sciences/environmental-sciences-bs/"
+            }
+        },
+        "EnvironmentalSciencesLS": {
+            "title": "Environmental Sciences (L&S)",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/atmospheric-oceanic-sciences/environmental-sciences-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/atmospheric-oceanic-sciences/environmental-sciences-bs/"
+            }
+        },
+        "EnvironmentalSoilScience": {
+            "title": "Environmental Soil Science",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/soil-environmental-sciences/environmental-soil-science-certificate/"
+            }
+        },
+        "EnvironmentalStudies": {
+            "title": "Environmental Studies",
+            "type": {
+                "Second major only": "https://guide.wisc.edu/undergraduate/letters-science/environmental-studies/environmental-studies-major/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/environmental-studies/environmental-studies/environmental-studies-certificate/"
+            }
+        },
+        "EuropeanStudies": {
+            "title": "European Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/european-studies-certificate/"
+            }
+        },
+        "FermentedFoodsandBeverages": {
+            "title": "Fermented Foods and Beverages",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/food-science/fermented-foods-beverages-certificate/"
+            }
+        },
+        "Folklore": {
+            "title": "Folklore",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/folklore-certificate/"
+            }
+        },
+        "FoodScience": {
+            "title": "Food Science",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/food-science/food-science-bs/"
+            }
+        },
+        "FoodSystems": {
+            "title": "Food Systems",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/community-environmental-sociology/food-systems-certificate/"
+            }
+        },
+        "ForestScience": {
+            "title": "Forest Science",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/forest-wildlife-ecology/forest-science-bs/"
+            }
+        },
+        "French": {
+            "title": "French",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/french-italian/french-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/french-italian/french-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/french-italian/french-certificate/"
+            }
+        },
+        "GameDesign": {
+            "title": "Game Design",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/curriculum-instruction/game-design-certificate/"
+            }
+        },
+        "GenderandWomensStudies": {
+            "title": "Gender and Women\u2019s Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/gender-womens-studies/gender-womens-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/gender-womens-studies/gender-womens-studies-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/gender-womens-studies/gender-womens-studies-certificate/"
+            }
+        },
+        "GeneticsandGenomics": {
+            "title": "Genetics and Genomics",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/genetics/genetics-genomics-bs/"
+            }
+        },
+        "Geography": {
+            "title": "Geography",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/geography/geography-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/geography/geography-bs/"
+            }
+        },
+        "GeologicalEngineering": {
+            "title": "Geological Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/civil-environmental-engineering/geological-engineering-bs/"
+            }
+        },
+        "GeologyandGeophysics": {
+            "title": "Geology and Geophysics",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/geoscience/geology-geophysics-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/geoscience/geology-geophysics-bs/"
+            }
+        },
+        "German": {
+            "title": "German",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/german-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/german-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/german-certificate/"
+            }
+        },
+        "GlobalCulturesLanguagesandEducation": {
+            "title": "Global Cultures, Languages, and Education",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/educational-policy-studies/global-cultures-languages-education-certificate/"
+            }
+        },
+        "GlobalHealth": {
+            "title": "Global Health",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/entomology/global-health-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/entomology/global-health-certificate/"
+            }
+        },
+        "GraphicDesign": {
+            "title": "Graphic Design",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/art/graphic-design-certificate/"
+            }
+        },
+        "HealthPolicy": {
+            "title": "Health Policy",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/lafollette-school-public-affairs/health-policy-certificate/"
+            }
+        },
+        "HealthPromotionandHealthEquity": {
+            "title": "Health Promotion and Health Equity",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/education/kinesiology/health-promotion-health-equity-bs/"
+            }
+        },
+        "HealthandtheHumanities": {
+            "title": "Health and the Humanities",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/integrated-liberal-studies/health-humanities-certificate/"
+            }
+        },
+        "History": {
+            "title": "History",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/history/history-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/history/history-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/history/history-certificate/"
+            }
+        },
+        "Horticulture": {
+            "title": "Horticulture",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/plant-agroecosystem-sciences/horticulture-bs/"
+            }
+        },
+        "HumanDevelopmentandFamilyStudies": {
+            "title": "Human Development and Family Studies",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/human-development-family-studies/human-development-family-studies-bs/"
+            }
+        },
+        "IndividualMajor": {
+            "title": "Individual Major",
+            "type": {
+                "BSE": "https://guide.wisc.edu/undergraduate/education/school-wide/individual-major-bse/"
+            }
+        },
+        "IndividualMajorCALS": {
+            "title": "Individual Major (CALS)",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/college-wide/individual-major-bs/"
+            }
+        },
+        "IndividualMajorLS": {
+            "title": "Individual Major (L&S)",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/college-wide/individual-major-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/college-wide/individual-major-bs/"
+            }
+        },
+        "IndividualMajorSOHE": {
+            "title": "Individual Major (SOHE)",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/school-wide/individual-major-bs/"
+            }
+        },
+        "IndustrialEngineering": {
+            "title": "Industrial Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/industrial-systems-engineering/industrial-engineering-bs/"
+            }
+        },
+        "InformationScience": {
+            "title": "Information Science",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/information/information-science-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/information/information-science-bs/"
+            }
+        },
+        "IntegratedLiberalStudies": {
+            "title": "Integrated Liberal Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/integrated-liberal-studies/integrated-liberal-studies-certificate/"
+            }
+        },
+        "IntegratedStudiesinScienceEngineeringandSociety": {
+            "title": "Integrated Studies in Science, Engineering, and Society",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/sociology/integrated-studies-science-engineering-society-certificate/"
+            }
+        },
+        "IntegrativeDesignofBuiltandNaturalEnvironments": {
+            "title": "Integrative Design of Built and Natural Environments",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/planning-landscape-architecture/integrative-design-built-natural-environments-certificate/"
+            }
+        },
+        "InteriorArchitecture": {
+            "title": "Interior Architecture",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/design-studies/interior-architecture-bs/"
+            }
+        },
+        "InternationalBusiness": {
+            "title": "International Business",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/business/school-wide/international-business-certificate/"
+            }
+        },
+        "InternationalDevelopmentandEducation": {
+            "title": "International Development and Education",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/educational-policy-studies/international-development-education-certificate/"
+            }
+        },
+        "InternationalEngineering": {
+            "title": "International Engineering",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/engineering/college-wide/international-engineering-certificate/"
+            }
+        },
+        "InternationalStudies": {
+            "title": "International Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/international-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/international-studies-bs/"
+            }
+        },
+        "IntroductoryStudiesinDanceMovementTherapy": {
+            "title": "Introductory Studies in Dance/Movement Therapy",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/dance/introductory-studies-dance-movement-therapy-certificate/"
+            }
+        },
+        "Italian": {
+            "title": "Italian",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/french-italian/italian-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/french-italian/italian-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/french-italian/italian-certificate/"
+            }
+        },
+        "Japanese": {
+            "title": "Japanese",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/asian-languages-cultures/japanese-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/asian-languages-cultures/japanese-bs/"
+            }
+        },
+        "JapaneseProfessionalCommunication": {
+            "title": "Japanese Professional Communication",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/asian-languages-cultures/japanese-professional-communication-certificate/"
+            }
+        },
+        "JewishStudies": {
+            "title": "Jewish Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/center-jewish-studies/jewish-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/center-jewish-studies/jewish-studies-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/center-jewish-studies/jewish-studies-certificate/"
+            }
+        },
+        "Journalism": {
+            "title": "Journalism",
+            "type": {
+                "JBA": "https://guide.wisc.edu/undergraduate/letters-science/journalism-mass-communication/journalism-mass-communication-jba/",
+                "JBS": "https://guide.wisc.edu/undergraduate/letters-science/journalism-mass-communication/journalism-mass-communication-jbs/"
+            }
+        },
+        "Kinesiology": {
+            "title": "Kinesiology",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/education/kinesiology/kinesiology-bs/"
+            }
+        },
+        "LGBTQStudies": {
+            "title": "LGBTQ+ Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/gender-womens-studies/lgbtq-plus-studies-certificate/"
+            }
+        },
+        "LandscapeArchitecture": {
+            "title": "Landscape Architecture",
+            "type": {
+                "BLA": "https://guide.wisc.edu/undergraduate/letters-science/planning-landscape-architecture/landscape-architecture-bla/"
+            }
+        },
+        "LandscapeandUrbanStudies": {
+            "title": "Landscape and Urban Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/planning-landscape-architecture/landscape-urban-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/planning-landscape-architecture/landscape-urban-studies-bs/"
+            }
+        },
+        "LanguagesandCulturesofNorthernEurope": {
+            "title": "Languages and Cultures of Northern Europe",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/languages-cultures-northern-europe-certificate/"
+            }
+        },
+        "LatinAmericanCaribbeanandIberianStudies": {
+            "title": "Latin American, Caribbean, and Iberian Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/latin-american-caribbean-iberian-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/latin-american-caribbean-iberian-studies-bs/"
+            }
+        },
+        "LegalStudies": {
+            "title": "Legal Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/center-law-society-justice/legal-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/center-law-society-justice/legal-studies-bs/"
+            }
+        },
+        "LifeSciencesCommunication": {
+            "title": "Life Sciences Communication",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/life-sciences-communication/life-sciences-communication-bs/"
+            }
+        },
+        "Linguistics": {
+            "title": "Linguistics",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/language-sciences/linguistics-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/language-sciences/linguistics-bs/"
+            }
+        },
+        "ManufacturingEngineering": {
+            "title": "Manufacturing Engineering",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/engineering/mechanical-engineering/manufacturing-engineering-certificate/"
+            }
+        },
+        "MaterialCultureStudies": {
+            "title": "Material Culture Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/human-ecology/design-studies/material-culture-studies-certificate/"
+            }
+        },
+        "MaterialsScienceandEngineering": {
+            "title": "Materials Science and Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/materials-science-engineering/materials-science-engineering-bs/"
+            }
+        },
+        "Mathematics": {
+            "title": "Mathematics",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/mathematics/mathematics-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/mathematics/mathematics-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/mathematics/mathematics-certificate/"
+            }
+        },
+        "MechanicalEngineering": {
+            "title": "Mechanical Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/mechanical-engineering/mechanical-engineering-bs/"
+            }
+        },
+        "MedievalStudies": {
+            "title": "Medieval Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/history/medieval-studies-certificate/"
+            }
+        },
+        "MicrobiologyCALS": {
+            "title": "Microbiology (CALS)",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/bacteriology/microbiology-bs/"
+            }
+        },
+        "MicrobiologyLS": {
+            "title": "Microbiology (L&S)",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/college-wide/microbiology-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/college-wide/microbiology-bs/"
+            }
+        },
+        "MiddleEastStudies": {
+            "title": "Middle East Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/middle-east-studies-certificate/"
+            }
+        },
+        "MolecularandCellBiology": {
+            "title": "Molecular and Cell Biology",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/integrative-biology/molecular-cell-biology-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/integrative-biology/molecular-cell-biology-bs/"
+            }
+        },
+        "Music": {
+            "title": "Music",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/music/music-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/music/music-bs/"
+            }
+        },
+        "MusicEducationBM": {
+            "title": "Music: Education, B.M.",
+            "type": {
+                "BM": "https://guide.wisc.edu/undergraduate/letters-science/music/music-education-bm/"
+            }
+        },
+        "MusicPerformanceBM": {
+            "title": "Music: Performance, B.M.",
+            "type": {
+                "BM": "https://guide.wisc.edu/undergraduate/letters-science/music/music-performance-bm/"
+            }
+        },
+        "NavalScienceBNS": {
+            "title": "Naval Science, BNS",
+            "type": {
+                "BNS": "https://guide.wisc.edu/undergraduate/engineering/college-wide/naval-science-bns/"
+            }
+        },
+        "Neurobiology": {
+            "title": "Neurobiology",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/integrative-biology/neurobiology-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/integrative-biology/neurobiology-bs/"
+            }
+        },
+        "NuclearEngineering": {
+            "title": "Nuclear Engineering",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/engineering/nuclear-engineering-engineering-physics/nuclear-engineering-bs/"
+            }
+        },
+        "NuclearEngineeringMaterials": {
+            "title": "Nuclear Engineering Materials",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/engineering/nuclear-engineering-engineering-physics/nuclear-engineering-materials-certificate/"
+            }
+        },
+        "NursingBSN": {
+            "title": "Nursing, BSN",
+            "type": {
+                "BSN": "https://guide.wisc.edu/undergraduate/nursing/nursing/nursing-bsn/"
+            }
+        },
+        "NursingBSNAccelerated": {
+            "title": "Nursing, BSN (Accelerated)",
+            "type": {
+                "BSN": "https://guide.wisc.edu/undergraduate/nursing/nursing/nursing-collaborative-program-bsn/"
+            }
+        },
+        "NutritionalSciences": {
+            "title": "Nutritional Sciences",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/nutritional-sciences/nutritional-sciences-bs/"
+            }
+        },
+        "NutritionalSciencesNutritionandDietetics": {
+            "title": "Nutritional Sciences, Nutrition, and Dietetics",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/nutritional-sciences/nutritional-sciences-bs-nutrition-dietetics/"
+            }
+        },
+        "OrganicAgriculture": {
+            "title": "Organic Agriculture",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/plant-pathology/organic-agriculture-certificate/"
+            }
+        },
+        "PersonalFinance": {
+            "title": "Personal Finance",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/consumer-science/personal-finance-bs/"
+            }
+        },
+        "PharmaceuticalSciences": {
+            "title": "Pharmaceutical Sciences",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/pharmacy/pharmacy/pharmaceutical-sciences-bs/"
+            }
+        },
+        "PharmacologyandToxicology": {
+            "title": "Pharmacology and Toxicology",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/pharmacy/pharmacy/pharmacology-toxicology-bs/"
+            }
+        },
+        "Philosophy": {
+            "title": "Philosophy",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/philosophy/philosophy-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/philosophy/philosophy-bs/"
+            }
+        },
+        "PhysicalEducation": {
+            "title": "Physical Education",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/education/kinesiology/physical-education-bs/"
+            }
+        },
+        "Physics": {
+            "title": "Physics",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/physics/physics-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/physics/physics-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/physics/physics-certificate/"
+            }
+        },
+        "Pilates": {
+            "title": "Pilates",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/dance/pilates-certificate/"
+            }
+        },
+        "PlantPathology": {
+            "title": "Plant Pathology",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/plant-pathology/plant-pathology-bs/"
+            }
+        },
+        "Polish": {
+            "title": "Polish",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/polish-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/polish-bs/"
+            }
+        },
+        "PoliticalEconomyPhilosophyandPolitics": {
+            "title": "Political Economy, Philosophy, and Politics",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/political-science/political-economy-philosophy-politics-certificate/"
+            }
+        },
+        "PoliticalScience": {
+            "title": "Political Science",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/political-science/political-science-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/political-science/political-science-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/political-science/political-science-certificate/"
+            }
+        },
+        "Portuguese": {
+            "title": "Portuguese",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/spanish-portuguese/portuguese-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/spanish-portuguese/portuguese-bs/"
+            }
+        },
+        "PreparingtoTeachAbroad": {
+            "title": "Preparing to Teach Abroad",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/curriculum-instruction/preparing-teach-abroad-certificate/"
+            }
+        },
+        "PromotingActivityforDiverseAbilities": {
+            "title": "Promoting Activity for Diverse Abilities",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/kinesiology/promoting-activity-diverse-abilities-certificate/"
+            }
+        },
+        "Psychology": {
+            "title": "Psychology",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/psychology/psychology-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/psychology/psychology-bs/"
+            }
+        },
+        "PublicPolicy": {
+            "title": "Public Policy",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/lafollette-school-public-affairs/public-affairs-certificate/"
+            }
+        },
+        "RehabilitationPsychology": {
+            "title": "Rehabilitation Psychology",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/education/rehabilitation-psychology-special-education/rehabilitation-psychology-bse/"
+            }
+        },
+        "ReligiousStudies": {
+            "title": "Religious Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/religious-studies/religious-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/religious-studies/religious-studies-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/religious-studies/religious-studies-certificate/"
+            }
+        },
+        "RiskManagementandInsurance": {
+            "title": "Risk Management and Insurance",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/business/risk-insurance/risk-management-insurance-certificate/"
+            }
+        },
+        "Russian": {
+            "title": "Russian",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/russian-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/russian-bs/"
+            }
+        },
+        "RussianEastEuropeanandCentralAsianStudies": {
+            "title": "Russian, East European, and Central Asian Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/russian-east-european-central-asian-studies-certificate/"
+            }
+        },
+        "ScandinavianStudies": {
+            "title": "Scandinavian Studies",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/scandinavian-studies-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/scandinavian-studies-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/scandinavian-studies-certificate/"
+            }
+        },
+        "ScienceCommunication": {
+            "title": "Science Communication",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/life-sciences-communication/science-communication-certificate/"
+            }
+        },
+        "SlavicStudies": {
+            "title": "Slavic Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/german-nordic-slavic/slavic-studies-certificate/"
+            }
+        },
+        "SocialJusticeandEducation": {
+            "title": "Social Justice and Education",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/educational-policy-studies/social-justice-education-certificate/"
+            }
+        },
+        "SocialWelfare": {
+            "title": "Social Welfare",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/social-work/social-welfare-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/social-work/social-welfare-bs/"
+            }
+        },
+        "SocialWork": {
+            "title": "Social Work",
+            "type": {
+                "BSW": "https://guide.wisc.edu/undergraduate/letters-science/social-work/social-work-bsw/"
+            }
+        },
+        "Sociology": {
+            "title": "Sociology",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/sociology/sociology-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/sociology/sociology-bs/"
+            }
+        },
+        "SoilScience": {
+            "title": "Soil Science",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/soil-environmental-sciences/soil-science-bs/"
+            }
+        },
+        "SouthAsianStudies": {
+            "title": "South Asian Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/south-asian-studies-certificate/"
+            }
+        },
+        "SoutheastAsianStudies": {
+            "title": "Southeast Asian Studies",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/institute-regional-international-studies/southeast-asian-studies-certificate/"
+            }
+        },
+        "Spanish": {
+            "title": "Spanish",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/spanish-portuguese/spanish-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/spanish-portuguese/spanish-bs/"
+            }
+        },
+        "SpanishStudiesforBusinessStudents": {
+            "title": "Spanish Studies for Business Students",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/spanish-portuguese/spanish-studies-business-students-certificate/"
+            }
+        },
+        "SpecialEducation": {
+            "title": "Special Education",
+            "type": {
+                "BSE": "https://guide.wisc.edu/undergraduate/education/rehabilitation-psychology-special-education/special-education-bse/"
+            }
+        },
+        "SportsCommunication": {
+            "title": "Sports Communication",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/journalism-mass-communication/sports-communication-certificate/"
+            }
+        },
+        "Statistics": {
+            "title": "Statistics",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/statistics/statistics-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/statistics/statistics-bs/",
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/statistics/statistics-certificate/"
+            }
+        },
+        "SummerBusinessFundamentals": {
+            "title": "Summer Business Fundamentals",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/business/school-wide/summer-certificate-business-fundamentals/"
+            }
+        },
+        "Sustainability": {
+            "title": "Sustainability",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/environmental-studies/environmental-studies/sustainability-certificate/"
+            }
+        },
+        "TeachingEnglishtoSpeakersofOtherLanguages": {
+            "title": "Teaching English to Speakers of Other Languages",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/letters-science/english/teaching-english-speakers-other-languages-certificate/"
+            }
+        },
+        "TechnicalCommunication": {
+            "title": "Technical Communication",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/engineering/college-wide/technical-communication-certificate/"
+            }
+        },
+        "TextilesandDesign": {
+            "title": "Textiles and Design",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/human-ecology/design-studies/textiles-design-certificate/"
+            }
+        },
+        "TextilesandFashionDesign": {
+            "title": "Textiles and Fashion Design",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/human-ecology/design-studies/textiles-fashion-design-bs/"
+            }
+        },
+        "Theatre": {
+            "title": "Theatre",
+            "type": {
+                "Certificate": "https://guide.wisc.edu/undergraduate/education/theatre-drama/theatre-certificate/"
+            }
+        },
+        "TheatreandDrama": {
+            "title": "Theatre and Drama",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/education/theatre-drama/theatre-drama-bs/"
+            }
+        },
+        "WildlifeEcology": {
+            "title": "Wildlife Ecology",
+            "type": {
+                "BS": "https://guide.wisc.edu/undergraduate/agricultural-life-sciences/forest-wildlife-ecology/wildlife-ecology-bs/"
+            }
+        },
+        "Zoology": {
+            "title": "Zoology",
+            "type": {
+                "BA": "https://guide.wisc.edu/undergraduate/letters-science/integrative-biology/zoology-ba/",
+                "BS": "https://guide.wisc.edu/undergraduate/letters-science/integrative-biology/zoology-bs/"
+            }
+        }
+    }
+}

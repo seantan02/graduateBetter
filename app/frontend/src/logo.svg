@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" fill="none">
+    <!-- Badger Head -->
+    <ellipse cx="100" cy="100" rx="50" ry="60" fill="#333" stroke="#000" stroke-width="3" />
+    
+    <!-- Badger Stripes -->
+    <path d="M85,40 Q100,20 115,40" fill="white" stroke="white" stroke-width="6" />
+    <path d="M90,45 Q100,25 110,45" fill="white" stroke="white" stroke-width="6" />
+    
+    <!-- Glasses -->
+    <circle cx="80" cy="90" r="15" fill="none" stroke="#000" stroke-width="3" />
+    <circle cx="120" cy="90" r="15" fill="none" stroke="#000" stroke-width="3" />
+    <rect x="95" y="85" width="10" height="5" fill="#000" />
+    
+    <!-- Eyes -->
+    <circle cx="80" cy="90" r="5" fill="#000" />
+    <circle cx="120" cy="90" r="5" fill="#000" />
+    
+    <!-- Nose -->
+    <ellipse cx="100" cy="120" rx="8" ry="6" fill="#000" />
+    
+    <!-- Mouth -->
+    <path d="M90,130 Q100,140 110,130" stroke="#000" stroke-width="3" fill="none" />
+    
+    <!-- Graduation Cap -->
+    <polygon points="75,50 125,50 100,20" fill="#000" />
+    <rect x="95" y="50" width="10" height="15" fill="#000" />
+    
+    <!-- Tassel -->
+    <line x1="100" y1="20" x2="110" y2="35" stroke="gold" stroke-width="3" />
+    <circle cx="110" cy="35" r="3" fill="gold" />
+</svg>
